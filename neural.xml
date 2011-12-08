@@ -98,6 +98,7 @@
                         <property name="label" translatable="yes">Incremental</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">radiomenuitem_algo</property>
+                        <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -108,6 +109,7 @@
                         <property name="label" translatable="yes">Batch</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">radiomenuitem_algo</property>
+                        <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -118,6 +120,7 @@
                         <property name="label" translatable="yes">RPROP</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">radiomenuitem_algo</property>
+                        <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
                     <child>
@@ -128,6 +131,7 @@
                         <property name="label" translatable="yes">QUICKPROP</property>
                         <property name="draw_as_radio">True</property>
                         <property name="group">radiomenuitem_algo</property>
+                        <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -187,7 +191,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="textview1">
+          <object class="GtkTextView" id="neuron_text">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
