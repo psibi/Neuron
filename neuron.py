@@ -6,7 +6,7 @@ import pygtk
 class neuron:
     """Main Neuron Application"""
     def __init__(self):
-        gladefile="neural.xml"
+        gladefile="neuron.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("mainwindow")
@@ -21,7 +21,7 @@ class neuron:
     def on_mainwindow_destroy(self,widget,data=None):
         gtk.main_quit()
 
-    def on__Quit_activate(self,widget,data=None):
+    def on_Quit_activate(self,widget,data=None):
         gtk.main_quit()
         
     def on_algorithm_changed(self,radiomenuitem,data=None):

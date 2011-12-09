@@ -11,10 +11,24 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-missing-image</property>
   </object>
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
+  <object class="GtkImage" id="image4">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-missing-image</property>
+  </object>
   <object class="GtkWindow" id="mainwindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Neuron Simulator</property>
     <property name="default_width">500</property>
     <property name="default_height">500</property>
     <signal handler="on_mainwindow_destroy" name="destroy" swapped="no"/>
@@ -58,21 +72,21 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkSeparatorMenuItem" id="separator_networkmenu">
+                      <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem" id="_Quit">
-                        <property name="label">gtk-quit</property>
+                      <object class="GtkImageMenuItem" id="quit_menuitem">
+                        <property name="label" translatable="yes">Quit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <signal handler="on__Quit_activate" name="activate" swapped="no"/>
+                        <property name="image">image3</property>
+                        <property name="use_stock">False</property>
+                        <signal handler="on_Quit_activate" name="activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -80,11 +94,11 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="bpnalgo_menu">
+              <object class="GtkMenuItem" id="algorithm_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">_BPN Algorithm</property>
+                <property name="label" translatable="yes">_Algorithm</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="menu2">
@@ -97,7 +111,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Incremental</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">radiomenuitem_algo</property>
+                        <property name="group">radiogroup_algo</property>
                         <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
@@ -108,7 +122,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Batch</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">radiomenuitem_algo</property>
+                        <property name="group">radiogroup_algo</property>
                         <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
@@ -119,8 +133,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">RPROP</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">radiomenuitem_algo</property>
-                        <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
+                        <property name="group">radiogroup_algo</property>
                       </object>
                     </child>
                     <child>
@@ -128,9 +141,10 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">QUICKPROP</property>
+                        <property name="label" translatable="yes">QPROP</property>
+                        <property name="use_underline">True</property>
                         <property name="draw_as_radio">True</property>
-                        <property name="group">radiomenuitem_algo</property>
+                        <property name="group">radiogroup_algo</property>
                         <signal handler="on_algorithm_changed" name="group-changed" swapped="no"/>
                       </object>
                     </child>
@@ -139,7 +153,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="train_menuitem">
+              <object class="GtkMenuItem" id="train_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
@@ -150,26 +164,26 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem" id="filetrain_menu">
-                        <property name="label">gtk-about</property>
+                      <object class="GtkImageMenuItem" id="train_file">
+                        <property name="label" translatable="yes">Get Training Data</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
+                        <property name="image">image4</property>
+                        <property name="use_stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="train_config">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Configure</property>
                         <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
                       </object>
                     </child>
                   </object>
                 </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="config_menu">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Configure</property>
-                <property name="use_underline">True</property>
               </object>
             </child>
           </object>
@@ -191,7 +205,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="neuron_text">
+          <object class="GtkTextView" id="textview1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
@@ -202,7 +216,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkStatusbar" id="statusbar2">
+          <object class="GtkStatusbar" id="statusbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">2</property>
@@ -216,7 +230,7 @@
       </object>
     </child>
   </object>
-  <object class="GtkRadioMenuItem" id="radiomenuitem_algo">
+  <object class="GtkRadioMenuItem" id="radiogroup_algo">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="use_action_appearance">False</property>
