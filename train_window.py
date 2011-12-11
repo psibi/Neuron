@@ -20,8 +20,9 @@ class train_window:
 
     def on_train(self,widget,data=None):
         if not self.Validate_form():
-            ed=errordialog()
-            ed.show()
+            em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Training Parameters Not Completed")
+            em.run()
+            em.destroy()
 
     def Validate_form(self):
         if self.connrate.get_text_length()==0:
@@ -56,7 +57,6 @@ class train_window:
     def on_train_window_destroy(self,widget,data=None):
         gtk.main_quit()
 
-        
 if __name__=="__main__":
     create_window=train_window()
     gtk.main()
