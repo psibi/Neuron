@@ -2,6 +2,7 @@
 import sys
 import gtk
 import pygtk
+from ask_param import askparam_window
 
 class selectbpn_window:
     """Window For Selecting BPN Network"""
@@ -32,6 +33,10 @@ class selectbpn_window:
 
     def get_network(self):
         return self.network
+
+    def on_next(self,widget,data=None):
+        self.window.hide()
+        askwin=askparam_window()
 
 if __name__=="__main__":
     create_window=selectbpn_window()
