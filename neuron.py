@@ -1,8 +1,9 @@
+#!/usr/bin/python
 import sys
 import gtk
 import pygtk
+from select_network import selectbpn_window
 
-#!/usr/bin/python
 class neuron:
     """Main Neuron Application"""
     def __init__(self):
@@ -37,8 +38,11 @@ class neuron:
             self.algorithm=True
         elif self.algo_qprop.get_active():
             self.algorithm_name="FANN_TRAIN_QUICKPROP"
-            self.algorithm=False
-            
+            self.algorithm=True
+           
+    def on_selectnetwork(self,widget,data=None):
+        sel_win=selectbpn_window()
+        
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
