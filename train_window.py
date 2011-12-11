@@ -10,6 +10,9 @@ class train_window:
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         builder.connect_signals(self)
+
+    def on_train_window_destroy(self,widget,data=None):
+        gtk.main_quit()
         
 if __name__=="__main__":
     create_window=train_window()
