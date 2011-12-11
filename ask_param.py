@@ -9,7 +9,6 @@ class askparam_window:
         gladefile="config_parameter.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
-       
         builder.connect_signals(self)
 
     def on_config_standard_destroy(self,widget,data=None):
