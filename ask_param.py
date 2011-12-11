@@ -9,13 +9,15 @@ class askparam_window:
         gladefile="config_parameter.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
+        self.awindow=builder.get_object("config_standard")
+        
         builder.connect_signals(self)
 
     def on_config_standard_destroy(self,widget,data=None):
-        gtk.main_quit()
+        self.awindow.destroy()
 
-    def get_network(self):
-        return self.network
+    def on_ok(self,widget,data=None):
+        
 
 if __name__=="__main__":
     create_window=askparam_window()
