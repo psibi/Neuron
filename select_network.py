@@ -17,7 +17,7 @@ class selectbpn_window:
         builder.connect_signals(self)
 
     def on_create_window_destroy(self,widget,data=None):
-        gtk.main_quit()
+        self.window.destroy()
 
     def on_network_selection(self,radiomenuitem,data=None):
         if self.standard.get_active():
