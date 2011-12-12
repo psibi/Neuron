@@ -37,8 +37,8 @@
             <property name="xalign">0.69999998807907104</property>
             <property name="yalign">0</property>
             <property name="draw_indicator">True</property>
-            <property name="group">group_rb</property>
-            <signal handler="on_network_selection" name="group-changed" swapped="no"/>
+            <property name="group">sparse_rb</property>
+            <signal handler="on_network_selection" name="toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -55,8 +55,8 @@
             <property name="use_action_appearance">False</property>
             <property name="xalign">0.69999998807907104</property>
             <property name="draw_indicator">True</property>
-            <property name="group">group_rb</property>
-            <signal handler="on_network_selection" name="group-changed" swapped="no"/>
+            <property name="group">standard_rb</property>
+            <signal handler="on_network_selection" name="toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -73,8 +73,8 @@
             <property name="use_action_appearance">False</property>
             <property name="xalign">0.69999998807907104</property>
             <property name="draw_indicator">True</property>
-            <property name="group">group_rb</property>
-            <signal handler="on_network_selection" name="group-changed" swapped="no"/>
+            <property name="group">standard_rb</property>
+            <signal handler="on_network_selection" name="toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -100,14 +100,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkRadioButton" id="group_rb">
-    <property name="label" translatable="yes">radiobutton</property>
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
-    <property name="receives_default">False</property>
-    <property name="use_action_appearance">False</property>
-    <property name="active">True</property>
-    <property name="draw_indicator">True</property>
   </object>
 </interface>
