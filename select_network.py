@@ -36,7 +36,8 @@ class selectbpn_window:
 
     def on_next(self,widget,data=None):
         self.window.hide()
-        askwin=askparam_window()
+        print self.network
+        askwin=askparam_window(self.network[0])
 
 if __name__=="__main__":
     create_window=selectbpn_window()
