@@ -18,7 +18,7 @@ class neuron:
         self.algorithm=False
         self.algorithm_name=""
         builder.connect_signals(self)
-
+        
     def on_mainwindow_destroy(self,widget,data=None):
         gtk.main_quit()
 
