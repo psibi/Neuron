@@ -2,6 +2,7 @@
 import sys
 import gtk
 import pygtk
+import dbm
 from train_window import train_window
 
 class askparam_window:
@@ -39,6 +40,13 @@ class askparam_window:
             em.run()
             em.destroy()
         else:
+            db=dbm.open('config.dat','c')
+            db['numl']=self.numl_text.get_text()
+            db['inputn']=self.inputn_text.get_text()
+            db['outputn']=self.outputn_text.get_text()
+            db['hiddenn']=self.hiddenn_text.get_text()
+            db['numh']=self.numh_text.get_text()
+            db.close()
             self.awindow.hide()
             twindow=train_window()
             
