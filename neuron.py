@@ -2,6 +2,7 @@
 import sys
 import gtk
 import pygtk
+import dbm
 from select_network import selectbpn_window
 
 class neuron:
@@ -11,10 +12,12 @@ class neuron:
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("mainwindow")
+        self.fcdialog=builder.get_object("training_filechooser")
         self.algo_inc=builder.get_object("incremental_menuitem")
         self.algo_batch=builder.get_object("batch_menuitem")
         self.algo_rprop=builder.get_object("rprop_menuitem")
         self.algo_qprop=builder.get_object("qprop_menuitem")
+        self.aboutdialog=builder.get_object("aboutdialog")
         self.algorithm=False
         self.algorithm_name=""
         builder.connect_signals(self)
@@ -41,11 +44,20 @@ class neuron:
             self.algorithm=True
            
     def on_selectnetwork(self,widget,data=None):
+        db=dbm.open('config.dat','c')
+        db['Algorithm']=self.algorithm_name
+        db.close()
         sel_win=selectbpn_window()
-        
+
+    def on_about_menuitem_activate(self,widget,data=None):
+        self.aboutdialog.show()
+
+    def on_aboutdialog_destroy(self,widget,data=None):
+        self.aboutdialog.hide()
+
+    def get_training_data(self,widget,data=None):
+        self.fcdialog.show()
+
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
-
-
-        
