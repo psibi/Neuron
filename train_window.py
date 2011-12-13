@@ -2,6 +2,7 @@
 import sys
 import gtk
 import pygtk
+import dbm
 
 class train_window:
     """Window For Asking Training Parameters about BPN Network"""
@@ -9,6 +10,7 @@ class train_window:
         gladefile="training_window.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
+        self.train_window=builder.get_object("train_window")
         self.connrate=builder.get_object("connrate_text")
         self.lrate=builder.get_object("lrate_text")
         self.derror=builder.get_object("derror_text")
@@ -18,11 +20,21 @@ class train_window:
         self.edialog=builder.get_object("errordialog")
         builder.connect_signals(self)
 
-    def on_train(self,widget,data=None):
+    def on_ok(self,widget,data=None):
         if not self.Validate_form():
             em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Training Parameters Not Completed")
             em.run()
             em.destroy()
+        else:
+            db=dbm.open('config.dat','c')
+            db['connrate']=self.connrate.get_text()
+            db['lrate']=self.lrate.get_text()
+            db['derror']=self.derror.get_text()
+            db['miter']=self.miter.get_text()
+            db['ireport']=self.ireport.get_text()
+            db['function']=self.function.get_active_text()
+            db.close()
+            self.train_window.destroy()
 
     def Validate_form(self):
         if self.connrate.get_text_length()==0:

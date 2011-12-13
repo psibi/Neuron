@@ -35,6 +35,9 @@ class selectbpn_window:
         return self.network
 
     def on_next(self,widget,data=None):
+        db=dbm.open('config.dat','c')
+        db['network']=self.network[0]
+        db.close()
         self.window.hide()
         print self.network
         askwin=askparam_window(self.network[0])
