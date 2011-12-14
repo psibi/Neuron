@@ -3,7 +3,8 @@ import sys
 import gtk
 import pygtk
 import dbm
-import glib
+import shlex
+import subprocess
 from select_network import selectbpn_window
 
 class neuron:
@@ -72,20 +73,13 @@ class neuron:
         filename=self.fcdialog.get_filename()
         self.fcdialog.hide()
 
-    def on_start_training(self,widget,data=None):
-        db=dbm.open('config.dat','c')
-        db['connrate']=self.connrate.get_text()
-        db['lrate']=self.lrate.get_text()
-        db['derror']=self.derror.get_text()
-        db['miter']=self.miter.get_text()
-        db['ireport']=self.ireport.get_text()
-        db['function']=self.function.get_active_text()
-        db['network']=self.network[0]
-        db['numl']=self.numl_text.get_text()
-        db['inputn']=self.inputn_text.get_text()
-        db['outputn']=self.outputn_text.get_text()
-        db['hiddenn']=self.hiddenn_text.get_text()
-        db['numh']=self.numh_text.get_text()
+    def start_training(self,widget,data=None):
+        cmd="./simple_train.py -t"
+        args=shlex.split(cmd)
+        process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
+        output=process.communicate()
+        if output[0]:
+            self.write_neuron(output[0])
 
 if __name__=="__main__":
     neuron_window=neuron()
