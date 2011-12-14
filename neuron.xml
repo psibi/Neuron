@@ -382,6 +382,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="label" translatable="yes">Print</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-page-setup</property>
+                <signal handler="on_print" name="clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -422,9 +423,19 @@ Boston, MA 02110-1301, USA.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="neuron_textview">
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <child>
+              <object class="GtkTextView" id="neuron_textview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="editable">False</property>
+                <property name="cursor_visible">False</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
