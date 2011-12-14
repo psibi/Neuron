@@ -295,10 +295,24 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton1</property>
+                <property name="label" translatable="yes">Network</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-convert</property>
                 <signal handler="on_selectnetwork" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="load">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Load</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-open</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -310,23 +324,9 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton1</property>
+                <property name="label" translatable="yes">Algorithm</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-copy</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="train">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">toolbutton1</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-connect</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -353,6 +353,61 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-play</property>
                 <signal handler="start_training" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="clear">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Clear</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-clear</property>
+                <signal handler="on_clean" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="print">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Print</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-page-setup</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="toolbutton2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="exit">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Exit</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-quit</property>
+                <signal handler="on_Quit_activate" name="clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
