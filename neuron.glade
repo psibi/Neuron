@@ -58,7 +58,6 @@ Boston, MA 02110-1301, USA.</property>
       </object>
     </child>
   </object>
-  <object class="GtkFileFilter" id="filefilter1"/>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -354,6 +353,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="label" translatable="yes">Train</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-media-play</property>
+                <signal name="clicked" handler="start_training" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -368,7 +368,7 @@ Boston, MA 02110-1301, USA.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTextView" id="textview1">
+          <object class="GtkTextView" id="neuron_textview">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
           </object>
@@ -416,7 +416,6 @@ Boston, MA 02110-1301, USA.</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">True</property>
-    <property name="filter">filefilter1</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
@@ -435,6 +434,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_fc_cancel" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -450,6 +450,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_fc_ok" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
