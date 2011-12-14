@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import os.path
 import sys
 import gtk
 import pygtk
@@ -24,13 +25,13 @@ class neuron:
         self.ntextview=builder.get_object("neuron_textview")
         self.algorithm=False
         self.algorithm_name=""
-        self.flag=False
         builder.connect_signals(self)
 
     def write_neuron(self,string):
-        buffer=gtk.TextBuffer()
-        buffer.set_text(string)
-        self.ntextview.set_buffer(buffer)
+        buf=self.ntextview.get_buffer()
+        textiter=buf.get_end_iter()
+        buf.insert(textiter,string+'\n\n')
+        self.ntextview.set_buffer(buf)
             
     def on_mainwindow_destroy(self,widget,data=None):
         gtk.main_quit()
@@ -85,14 +86,22 @@ class neuron:
             self.write_neuron(output[0])
 
     def on_clean(self,widget,data=None):
-        if self.flag:
+        if os.path.isfile('config.dat.db'):
             os.remove('config.dat.db')
         else:
             dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Dataset for the BPN Network Parameters are already clean")
             dlg.run()
             dlg.destroy()
 
+    def on_print(self,widget,data=None):
+        if os.path.isfile('config.dat.db'):
+            db=dbm.open('config.dat','c')
+            for k,v in db.iteritems():
+                line=k+'\t'+v
+                self.write_neuron(line)
+            db.close()
+        else:
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Cannot print, Since Neuron Parameter Dataset is empty.")
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
-
