@@ -23,8 +23,10 @@ class neuron:
         self.algo_qprop=builder.get_object("qprop_menuitem")
         self.aboutdialog=builder.get_object("aboutdialog")
         self.ntextview=builder.get_object("neuron_textview")
+        self.talgo_window=builder.get_object("talgo_window")
         self.algorithm=False
         self.algorithm_name=""
+        self.filename=""
         builder.connect_signals(self)
 
     def write_neuron(self,string):
@@ -74,7 +76,7 @@ class neuron:
         self.fcdialog.hide()
 
     def on_fc_ok(self,widget,data=None):
-        filename=self.fcdialog.get_filename()
+        self.filename=self.fcdialog.get_filename()
         self.fcdialog.hide()
 
     def start_training(self,widget,data=None):
@@ -88,8 +90,9 @@ class neuron:
     def on_clean(self,widget,data=None):
         if os.path.isfile('config.dat.db'):
             os.remove('config.dat.db')
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_INFO,gtk.BUTTONS_OK,"Neuron Dataset Cleaned")
         else:
-            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Dataset for the BPN Network Parameters are already clean")
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Neuron Dataset already Clean")
             dlg.run()
             dlg.destroy()
 
@@ -101,7 +104,20 @@ class neuron:
                 self.write_neuron(line)
             db.close()
         else:
-            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Cannot print, Since Neuron Parameter Dataset is empty.")
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Neuron Dataset is empty.")
+            dlg.text="Neuron Error"
+            dlg.run()
+            dlg.destroy()
+
+    def on_load(self,widget,data=None):
+        self.fcdialog.show()
+
+    def on_algorithm_clicked(self,widget,data=None):
+        self.talgo_window.show()
+
+    def on_talgo_ok_button_clicked(self,widget,data=None):
+        self.talgo_window.hide()
+
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
