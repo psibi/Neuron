@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os
 import sys
 import gtk
 import pygtk
@@ -23,6 +24,7 @@ class neuron:
         self.ntextview=builder.get_object("neuron_textview")
         self.algorithm=False
         self.algorithm_name=""
+        self.flag=False
         builder.connect_signals(self)
 
     def write_neuron(self,string):
@@ -53,6 +55,7 @@ class neuron:
            
     def on_selectnetwork(self,widget,data=None):
         db=dbm.open('config.dat','c')
+        self.flag=True
         db['Algorithm']=self.algorithm_name
         db.close()
         sel_win=selectbpn_window()
@@ -80,6 +83,14 @@ class neuron:
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
+
+    def on_clean(self,widget,data=None):
+        if self.flag:
+            os.remove('config.dat.db')
+        else:
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Dataset for the BPN Network Parameters are already clean")
+            dlg.run()
+            dlg.destroy()
 
 if __name__=="__main__":
     neuron_window=neuron()
