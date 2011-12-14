@@ -2,6 +2,7 @@
 import sys
 import gtk
 import pygtk
+import dbm
 from ask_param import askparam_window
 
 class selectbpn_window:
