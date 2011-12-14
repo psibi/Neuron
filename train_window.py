@@ -34,7 +34,7 @@ class train_window:
             db['ireport']=self.ireport.get_text()
             db['function']=self.function.get_active_text()
             db.close()
-            self.train_window.destroy()
+            self.train_window.hide()
 
     def Validate_form(self):
         if self.connrate.get_text_length()==0:
