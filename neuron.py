@@ -55,12 +55,11 @@ class neuron:
         elif self.algo_qprop.get_active():
             self.algorithm_name="FANN_TRAIN_QUICKPROP"
             self.algorithm=True
-           
-    def on_selectnetwork(self,widget,data=None):
         db=dbm.open('config.dat','c')
-        self.flag=True
-        db['Algorithm']=self.algorithm_name
+        db['Training Algorithm']=self.algorithm_name
         db.close()
+
+    def on_selectnetwork(self,widget,data=None):
         sel_win=selectbpn_window()
 
     def on_about_menuitem_activate(self,widget,data=None):
@@ -78,6 +77,10 @@ class neuron:
     def on_fc_ok(self,widget,data=None):
         self.filename=self.fcdialog.get_filename()
         self.fcdialog.hide()
+        db=dbm.open('config.dat','c')
+        #WARNING WARNING: Change the logic here
+        db['Training File']=self.filename
+        db.close()
 
     def start_training(self,widget,data=None):
         cmd="./simple_train.py -t"
@@ -99,8 +102,8 @@ class neuron:
     def on_print(self,widget,data=None):
         if os.path.isfile('config.dat.db'):
             db=dbm.open('config.dat','c')
-            for k,v in db.iteritems():
-                line=k+'\t'+v
+            for key in db.keys():
+                line=key+"\t"+db[key]
                 self.write_neuron(line)
             db.close()
         else:
