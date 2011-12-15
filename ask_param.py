@@ -41,11 +41,12 @@ class askparam_window:
             em.destroy()
         else:
             db=dbm.open('config.dat','c')
-            db['numl']=self.numl_text.get_text()
-            db['inputn']=self.inputn_text.get_text()
-            db['outputn']=self.outputn_text.get_text()
-            db['hiddenn']=self.hiddenn_text.get_text()
-            db['numh']=self.numh_text.get_text()
+            db['Network Type']=self.type
+            db['Number of Layers']=self.numl_text.get_text()
+            db['Input Neurons']=self.inputn_text.get_text()
+            db['Output Neurons']=self.outputn_text.get_text()
+            db['Hidden Neurons']=self.hiddenn_text.get_text()
+            db['Number of Hidden Layers']=self.numh_text.get_text()
             db.close()
             self.awindow.hide()
             twindow=train_window()
