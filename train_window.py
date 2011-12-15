@@ -27,12 +27,12 @@ class train_window:
             em.destroy()
         else:
             db=dbm.open('config.dat','c')
-            db['connrate']=self.connrate.get_text()
-            db['lrate']=self.lrate.get_text()
-            db['derror']=self.derror.get_text()
-            db['miter']=self.miter.get_text()
-            db['ireport']=self.ireport.get_text()
-            db['function']=self.function.get_active_text()
+            db['Connection Rate']=self.connrate.get_text()
+            db['Learning Rate']=self.lrate.get_text()
+            db['Desired Error']=self.derror.get_text()
+            db['Maximum Iterations']=self.miter.get_text()
+            db['Iteration Between Reports']=self.ireport.get_text()
+            db['Output Layer Activation Function']=self.function.get_active_text()
             db.close()
             self.train_window.hide()
 
