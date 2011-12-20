@@ -279,6 +279,41 @@ Boston, MA 02110-1301, USA.</property>
                 </child>
               </object>
             </child>
+            <child>
+              <object class="GtkMenuItem" id="fun_approx">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">F(x) Approximation</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="getarg_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Get Argument Data</property>
+                        <property name="use_underline">True</property>
+                        <signal handler="get_argument_data" name="activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="approx_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Approximate</property>
+                        <property name="use_underline">True</property>
+                        <signal handler="approximate" name="activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -411,6 +446,32 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
                 <signal handler="on_cleantext_click" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="approximate">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Approximate</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-dialog-authentication</property>
+                <signal handler="approximate" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="toolbutton3">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
