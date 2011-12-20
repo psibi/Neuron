@@ -20,10 +20,6 @@ class Neuron_TextViewOutput:
         buf.insert(textiter,string+'\n\n')
         self.ntextview.set_buffer(buf)
 
-class samp:
-    def hell(self):
-        print "hell"
-
 class neuron:
     """Main Neuron Application"""
     def __init__(self):
@@ -141,7 +137,6 @@ class neuron:
         self.talgo_window.hide()
 
     def on_cleantext_click(self,widget,data=None):
-        print "idiot"
         buf=gtk.TextBuffer()
         buf.set_text("")
         self.ntextview.set_buffer(buf)
