@@ -96,7 +96,11 @@ class neuron:
             db.close()
         elif self.filename.endswith(".net"):
             self.loadfile=self.filename
-
+        elif self.filename.endswith(".fa"):
+            db=dbm.open('config.dat','c')
+            db['Argument Data']=self.filename
+            db.close()
+        
     def start_training(self,widget,data=None):
         cmd="./train.py -t"
         args=shlex.split(cmd)
@@ -140,7 +144,18 @@ class neuron:
         buf=gtk.TextBuffer()
         buf.set_text("")
         self.ntextview.set_buffer(buf)
-                
+
+    def get_argument_data(self,widget,data=None):
+        self.fcdialog.show()
+
+    def approximate(self,widget,data=None):
+        cmd="./test.py"
+        args=shlex.split(cmd)
+        process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
+        output=process.communicate()
+        if output[0]:
+            self.write_neuron(output[0])
+        
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
