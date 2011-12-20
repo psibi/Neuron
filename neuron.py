@@ -6,8 +6,23 @@ import gtk
 import pygtk
 import dbm
 import shlex
+import shutil
 import subprocess
 from select_network import selectbpn_window
+
+class Neuron_TextViewOutput:
+    def __init__(self,textview):
+        self.ntextview=textview
+
+    def write(self,string):
+        buf=self.ntextview.get_buffer()
+        textiter=buf.get_end_iter()
+        buf.insert(textiter,string+'\n\n')
+        self.ntextview.set_buffer(buf)
+
+class samp:
+    def hell(self):
+        print "hell"
 
 class neuron:
     """Main Neuron Application"""
@@ -27,8 +42,10 @@ class neuron:
         self.algorithm=False
         self.algorithm_name=""
         self.filename=""
+        self.loadfile=""
+        sys.stdout=Neuron_TextViewOutput(self.ntextview)
         builder.connect_signals(self)
-
+        
     def write_neuron(self,string):
         buf=self.ntextview.get_buffer()
         textiter=buf.get_end_iter()
@@ -77,19 +94,21 @@ class neuron:
     def on_fc_ok(self,widget,data=None):
         self.filename=self.fcdialog.get_filename()
         self.fcdialog.hide()
-        db=dbm.open('config.dat','c')
-        #WARNING WARNING: Change the logic here
-        db['Training File']=self.filename
-        db.close()
+        if self.filename.endswith(".data"):
+            db=dbm.open('config.dat','c')
+            db['Training File']=self.filename
+            db.close()
+        elif self.filename.endswith(".net"):
+            self.loadfile=self.filename
 
     def start_training(self,widget,data=None):
-        cmd="./simple_train.py -t"
+        cmd="./train.py -t"
         args=shlex.split(cmd)
         process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
-
+            
     def on_clean(self,widget,data=None):
         if os.path.isfile('config.dat.db'):
             os.remove('config.dat.db')
