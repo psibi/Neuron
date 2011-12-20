@@ -140,6 +140,12 @@ class neuron:
     def on_talgo_ok_button_clicked(self,widget,data=None):
         self.talgo_window.hide()
 
+    def on_cleantext_click(self,widget,data=None):
+        print "idiot"
+        buf=gtk.TextBuffer()
+        buf.set_text("")
+        self.ntextview.set_buffer(buf)
+                
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
