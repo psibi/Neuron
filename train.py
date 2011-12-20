@@ -4,20 +4,7 @@ import dbm
 import sys
 import gtk
 import shutil
-#db=dbm.open('config.dat','c')
-#connection_rate=db['connrate']
-#learning_rate=db['lrate']
-#desired_error= db['derror']
-#max_iterations= db['miter']
-#iterations_between_reports=db['ireport']
-#function=db['function']
-#network=db['network']
-#numl=db['numl']
-#num_input=db['inputn']
-#num_output=db['outputn']
-#num_neurons_hidden=db['hiddenn']
-#numh_layers=db['numh']
-#db.close()
+
 db=dbm.open('config.dat','c')
 talgo=db['Training Algorithm']
 bpn_type=db['Network Type']
@@ -34,14 +21,6 @@ iterations_between_reports=int(db['Iteration Between Reports'])
 ol_act_fun=db['Output Layer Activation Function']
 tfile=db['Training File']
 db.close()
-#connection_rate = 1
-#learning_rate = 0.7
-#num_input = 2
-#num_neurons_hidden = 4
-#num_output = 1
-#desired_error = 0.0001
-#max_iterations = 100000
-#iterations_between_reports = 1000
 
 class bpn:
 
