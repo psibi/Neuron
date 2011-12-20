@@ -403,6 +403,21 @@ Boston, MA 02110-1301, USA.</property>
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="clean_window">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Clean Text</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-refresh</property>
+                <signal handler="on_cleantext_click" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkToolButton" id="exit">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
