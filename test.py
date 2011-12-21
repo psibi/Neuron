@@ -2,6 +2,8 @@
 from pyfann import libfann
 import dbm
 import sys
+import gtk
+import shutil
 
 db=dbm.open('config.dat','c')
 talgo=db['Training Algorithm']
@@ -18,46 +20,35 @@ max_iterations=int(db['Maximum Iterations'])
 iterations_between_reports=int(db['Iteration Between Reports'])
 ol_act_fun=db['Output Layer Activation Function']
 tfile=db['Training File']
-afile=db['Argument Data']
+test_file=db['Test File']
 db.close()
 
-class function_aprox:
+class bpn_test:
 
     def __init__(self):
-        self.ann = libfann.neural_net()
-        
+        pass
+
     def test(self):
-        self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
-        self.ann.set_learning_rate(learning_rate)
-        self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
-        self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
-        print "\nFunction Approximation Details:"
-        fin=open("./dataset/xor.fa","r")
-        print ""
-        inputs=fin.readlines()
-        fin.close()
-        width=20
-        once=True
-        for ite in range(len(inputs)):
-            a=inputs.pop()
-            b=a.split(' ')
-            sample=b[1]
-            second=sample[:-1]
-            inpu=(int(b[0]),int(second))
-            calc_out=self.ann.run(inpu)
-            i=""
-            header=""
-            for x in range(len(inpu)):
-                i=i+"\t"+str(inpu[x]).ljust(width)
-                header=header+"\t"+"Input #"+str(x)
-                header.rjust(width)
-            if once:
-                print header+" ","Approximated Value"
-                once=False
-            print i+"\t",calc_out
+        print "Creating network."	
+        train_data = libfann.training_data()
+        train_data.read_train_from_file(tfile)
+        ann = libfann.neural_net()
+        ann.create_sparse_array(connection_rate, (len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+        ann.set_learning_rate(learning_rate)
+        ann.set_activation_function_hidden(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        ann.set_activation_function_output(libfann.SIGMOID_STEPWISE)
+        ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
+	ann.train_on_data(train_data, max_iterations, iterations_between_reports, desired_error)
+	
+        print "Testing network"
+        test_data = libfann.training_data()
+        test_data.read_train_from_file(test_file)
+        ann.reset_MSE()
+        ann.test_data(test_data)
+        print "MSE error on test data: %f" % ann.get_MSE()
 
 if __name__=="__main__":
-    network=function_aprox()
+    network=bpn_test()
     network.test()
 
-
+        
