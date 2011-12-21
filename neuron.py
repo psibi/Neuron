@@ -90,12 +90,14 @@ class neuron:
     def on_fc_ok(self,widget,data=None):
         self.filename=self.fcdialog.get_filename()
         self.fcdialog.hide()
-        if self.filename.endswith(".data"):
+        if self.filename.endswith(".train"):
             db=dbm.open('config.dat','c')
             db['Training File']=self.filename
             db.close()
-        elif self.filename.endswith(".net"):
-            self.loadfile=self.filename
+        elif self.filename.endswith(".test"):
+            db=dbm.open('config.dat','c')
+            db['Test File']=self.filename
+            db.close()
         elif self.filename.endswith(".fa"):
             db=dbm.open('config.dat','c')
             db['Argument Data']=self.filename
@@ -147,8 +149,19 @@ class neuron:
 
     def get_argument_data(self,widget,data=None):
         self.fcdialog.show()
-
+         
     def approximate(self,widget,data=None):
+        cmd="./fapprox.py"
+        args=shlex.split(cmd)
+        process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
+        output=process.communicate()
+        if output[0]:
+            self.write_neuron(output[0])
+
+    def get_test_data(self,widget,data=None):
+        self.fcdialog.show()
+
+    def on_test(self,widget,data=None):
         cmd="./test.py"
         args=shlex.split(cmd)
         process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
