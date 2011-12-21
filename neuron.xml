@@ -233,6 +233,16 @@ Boston, MA 02110-1301, USA.</property>
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="training_menu">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Train</property>
+                        <property name="use_underline">True</property>
+                        <signal handler="start_training" name="activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="train_config">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -246,33 +256,34 @@ Boston, MA 02110-1301, USA.</property>
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem" id="help_menu">
+              <object class="GtkMenuItem" id="test_menu">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Help</property>
+                <property name="label" translatable="yes">T_est</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
-                  <object class="GtkMenu" id="menu4">
+                  <object class="GtkMenu" id="menu6">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkMenuItem" id="ref_menuitem">
+                      <object class="GtkMenuItem" id="test_file">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Reference</property>
+                        <property name="label" translatable="yes">Get Test Data</property>
                         <property name="use_underline">True</property>
+                        <signal handler="get_test_data" name="activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="about_menuitem">
+                      <object class="GtkMenuItem" id="test_menuitem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">About</property>
+                        <property name="label" translatable="yes">Test</property>
                         <property name="use_underline">True</property>
-                        <signal handler="on_about_menuitem_activate" name="activate" swapped="no"/>
+                        <signal handler="on_test" name="activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -308,6 +319,40 @@ Boston, MA 02110-1301, USA.</property>
                         <property name="label" translatable="yes">Approximate</property>
                         <property name="use_underline">True</property>
                         <signal handler="approximate" name="activate" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="help_menu">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Help</property>
+                <property name="use_underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkMenuItem" id="ref_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Reference</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="about_menuitem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">About</property>
+                        <property name="use_underline">True</property>
+                        <signal handler="on_about_menuitem_activate" name="activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -397,14 +442,40 @@ Boston, MA 02110-1301, USA.</property>
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="clear">
+              <object class="GtkToolButton" id="test">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Clear</property>
+                <property name="label" translatable="yes">Test</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-clear</property>
-                <signal handler="on_clean" name="clicked" swapped="no"/>
+                <property name="stock_id">gtk-media-next</property>
+                <signal handler="on_test" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="approximate">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Approximate</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-dialog-authentication</property>
+                <signal handler="approximate" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem" id="toolbutton2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -427,10 +498,14 @@ Boston, MA 02110-1301, USA.</property>
               </packing>
             </child>
             <child>
-              <object class="GtkSeparatorToolItem" id="toolbutton2">
+              <object class="GtkToolButton" id="clear">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Clear</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-clear</property>
+                <signal handler="on_clean" name="clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -446,21 +521,6 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
                 <signal handler="on_cleantext_click" name="clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="approximate">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="use_action_appearance">False</property>
-                <property name="label" translatable="yes">Approximate</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-dialog-authentication</property>
-                <signal handler="approximate" name="clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -711,8 +771,7 @@ Boston, MA 02110-1301, USA.</property>
   <object class="GtkFileChooserDialog" id="training_filechooser">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
-    <property name="type">popup</property>
-    <property name="title" translatable="yes">Select Training Data</property>
+    <property name="title" translatable="yes">Select Data</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">True</property>
