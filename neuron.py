@@ -35,6 +35,10 @@ class neuron:
         self.aboutdialog=builder.get_object("aboutdialog")
         self.ntextview=builder.get_object("neuron_textview")
         self.talgo_window=builder.get_object("talgo_window")
+        self.vbox4=builder.get_object("vbox4")
+        self.vbox5=builder.get_object("vbox5")
+        self.adv_trainwindow=builder.get_object("adv_train_window")
+        self.af_liststore=builder.get_object("af_liststore")
         self.algorithm=False
         self.algorithm_name=""
         self.filename=""
@@ -168,7 +172,25 @@ class neuron:
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
-        
+
+    def on_add_afn(self,button,data=None):
+        entry=gtk.Entry()
+        cb = gtk.ComboBox(self.af_liststore)
+        #self.entrys.append(entry)
+        self.vbox5.pack_start(cb, True, True, 1)
+        self.vbox4.pack_start(entry,True,True,1)
+        cb.show()
+        entry.show()
+
+    def on_adv_train_window_destroy(self,widget,data=None):
+        self.adv_trainwindow.hide()
+
+    def on_add_afl(self,button,data=None):
+        pass
+
+    def on_train_config_activate(self,widget,data=None):
+        self.adv_trainwindow.show()
+
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
