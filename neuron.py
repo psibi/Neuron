@@ -10,6 +10,7 @@ import shutil
 import subprocess
 from select_network import selectbpn_window
 from adv_train import adv_train
+from cnetwork import cnetwork
 
 class Neuron_TextViewOutput:
     def __init__(self,textview):
@@ -173,6 +174,10 @@ class neuron:
     def on_train_config_activate(self,widget,data=None):
         atrain=adv_train()
         atrain.show()
+
+    def on_configure_menuitem_activate(self,widget,data=None):
+        cwindow=cnetwork()
+        cwindow.show()
 
 if __name__=="__main__":
     neuron_window=neuron()
