@@ -40,7 +40,6 @@ class selectbpn_window:
         db['network']=self.network[0]
         db.close()
         self.window.hide()
-        print self.network
         askwin=askparam_window(self.network[0])
 
 if __name__=="__main__":
