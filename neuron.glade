@@ -34,6 +34,7 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 Boston, MA 02110-1301, USA.</property>
     <property name="logo">./images/logo.png</property>
     <signal name="destroy" handler="on_aboutdialog_destroy" swapped="no"/>
+    <signal name="delete-event" handler="on_aboutdialog_delete_event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>

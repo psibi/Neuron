@@ -33,6 +33,7 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 Boston, MA 02110-1301, USA.</property>
     <property name="logo">./images/logo.png</property>
     <signal handler="on_aboutdialog_destroy" name="destroy" swapped="no"/>
+    <signal handler="on_aboutdialog_delete_event" name="delete-event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -650,7 +651,6 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="xalign">1</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
-                <property name="group">batch</property>
                 <signal handler="on_algorithm_selected" name="toggled" swapped="no"/>
               </object>
             </child>
