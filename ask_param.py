@@ -14,17 +14,13 @@ class askparam_window:
         self.type=net
         self.awindow=builder.get_object("config_standard")
         self.clabel=builder.get_object("config_label")
-        self.conn_label=builder.get_object("conn_label")
         self.numl_text=builder.get_object("numl_text")
         self.inputn_text=builder.get_object("inputn_text")
         self.outputn_text=builder.get_object("outputn_text")
         self.hiddenn_text=builder.get_object("hiddenn_text")
         self.numh_text=builder.get_object("numh_text")
-        self.connrate_text=builder.get_object("connrate_text")
         if (net == "SPR"):
             self.clabel.set_label("Enter Sparse BPN Parameters")
-            self.conn_label.show()
-            self.connrate_text.show()
         elif (net == "STD"):
             self.clabel.set_label("Enter Standard BPN Parameters")
         elif (net == "SRT"):
