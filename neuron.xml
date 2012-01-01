@@ -650,6 +650,8 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="xalign">1</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <property name="group">batch</property>
+                <signal handler="on_algorithm_selected" name="toggled" swapped="no"/>
               </object>
             </child>
           </object>
@@ -674,6 +676,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">incremental</property>
+                <signal handler="on_algorithm_selected" name="toggled" swapped="no"/>
               </object>
             </child>
           </object>
@@ -698,6 +701,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">incremental</property>
+                <signal handler="on_algorithm_selected" name="toggled" swapped="no"/>
               </object>
             </child>
           </object>
@@ -723,6 +727,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">incremental</property>
+                <signal handler="on_algorithm_selected" name="toggled" swapped="no"/>
               </object>
             </child>
           </object>
