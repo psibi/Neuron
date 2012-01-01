@@ -785,6 +785,7 @@ Boston, MA 02110-1301, USA.</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">True</property>
+    <signal name="delete-event" handler="on_training_filechooser_delete_event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
