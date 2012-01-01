@@ -17,6 +17,7 @@ class selectbpn_window:
         self.shortcut=builder.get_object("shortcut_rb")
         self.network=[]
         builder.connect_signals(self)
+        self.standard.toggled()
 
     def on_create_window_destroy(self,widget,data=None):
         self.window.destroy()
