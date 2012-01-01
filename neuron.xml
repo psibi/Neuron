@@ -606,6 +606,7 @@ Boston, MA 02110-1301, USA.</property>
     <property name="title" translatable="yes">Select Training Algorithm</property>
     <property name="destroy_with_parent">True</property>
     <property name="transient_for">mainwindow</property>
+    <signal handler="on_talgo_window_delete_event" name="delete-event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
