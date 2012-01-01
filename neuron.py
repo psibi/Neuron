@@ -202,6 +202,10 @@ class neuron:
         cwindow=cnetwork()
         cwindow.show()
 
+    def on_aboutdialog_delete_event(self,widget,data=None):
+        self.aboutdialog.hide()
+        return True
+
 if __name__=="__main__":
     neuron_window=neuron()
     gtk.main()
