@@ -82,6 +82,16 @@ class neuron:
         db['Training Algorithm']=self.algorithm_name
         db.close()
 
+    def on_algorithm_selected(self,radiomenuitem,data=None):
+        if self.incremental.get_active():
+            self.algo_inc.set_active(True)
+        elif self.batch.get_active():
+            self.algo_batch.set_active(True)
+        elif self.rprop.get_active():
+            self.algo_rprop.set_active(True)
+        elif self.qprop.get_active():
+            self.algo_qprop.set_active(True)
+
     def on_talgo_window_delete_event(self,widget,data=None):
         self.talgo_window.hide()
         return True
@@ -152,6 +162,7 @@ class neuron:
 
     def on_algorithm_clicked(self,widget,data=None):
         self.talgo_window.show()
+        self.incremental.toggled()
 
     def on_talgo_ok_button_clicked(self,widget,data=None):
         self.talgo_window.hide()
@@ -190,9 +201,6 @@ class neuron:
     def on_configure_menuitem_activate(self,widget,data=None):
         cwindow=cnetwork()
         cwindow.show()
-
-    def on_algorithm_selected(self,widget,data=None):
-        pass
 
 if __name__=="__main__":
     neuron_window=neuron()
