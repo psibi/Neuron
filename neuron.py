@@ -205,6 +205,10 @@ class neuron:
     def on_aboutdialog_delete_event(self,widget,data=None):
         self.aboutdialog.hide()
         return True
+    
+    def on_training_filechooser_delete_event(self,widget,data=None):
+        self.fcdialog.hide()
+        return True
 
 if __name__=="__main__":
     neuron_window=neuron()
