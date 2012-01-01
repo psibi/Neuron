@@ -37,6 +37,10 @@ class neuron:
         self.aboutdialog=builder.get_object("aboutdialog")
         self.ntextview=builder.get_object("neuron_textview")
         self.talgo_window=builder.get_object("talgo_window")
+        self.incremental=builder.get_object("incremental")
+        self.batch=builder.get_object("batch")
+        self.rprop=builder.get_object("rprop")
+        self.qprop=builder.get_object("qprop")
         self.algorithm=False
         self.algorithm_name=""
         self.filename=""
@@ -60,19 +64,27 @@ class neuron:
         """This function is called whenever the radiomenuitem state is changed. This sets the algorithm of the training network"""
         if self.algo_inc.get_active():
             self.algorithm_name="FANN_TRAIN_INCREMENTAL"
+            self.incremental.set_active(True)
             self.algorithm=True
         elif self.algo_batch.get_active():
             self.algorithm_name="FANN_TRAIN_BATCH"
+            self.batch.set_active(True)
             self.algorithm=True
         elif self.algo_rprop.get_active():
             self.algorithm_name="FANN_TRAIN_RPROP"
+            self.rprop.set_active(True)
             self.algorithm=True
         elif self.algo_qprop.get_active():
             self.algorithm_name="FANN_TRAIN_QUICKPROP"
+            self.qprop.set_active(True)
             self.algorithm=True
         db=dbm.open('config.dat','c')
         db['Training Algorithm']=self.algorithm_name
         db.close()
+
+    def on_talgo_window_delete_event(self,widget,data=None):
+        self.talgo_window.hide()
+        return True
 
     def on_selectnetwork(self,widget,data=None):
         sel_win=selectbpn_window()
@@ -178,6 +190,9 @@ class neuron:
     def on_configure_menuitem_activate(self,widget,data=None):
         cwindow=cnetwork()
         cwindow.show()
+
+    def on_algorithm_selected(self,widget,data=None):
+        pass
 
 if __name__=="__main__":
     neuron_window=neuron()
