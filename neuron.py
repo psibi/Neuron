@@ -47,6 +47,7 @@ class neuron:
         self.loadfile=""
         sys.stdout=Neuron_TextViewOutput(self.ntextview)
         builder.connect_signals(self)
+        self.aboutdialog.connect("response", lambda d,r: d.hide())
         
     def write_neuron(self,string):
         buf=self.ntextview.get_buffer()
@@ -101,9 +102,6 @@ class neuron:
 
     def on_about_menuitem_activate(self,widget,data=None):
         self.aboutdialog.show()
-
-    def on_aboutdialog_destroy(self,widget,data=None):
-        self.aboutdialog.hide()
 
     def get_training_data(self,widget,data=None):
         self.fcdialog.show()

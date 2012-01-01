@@ -32,7 +32,6 @@ License along with Neuron; if not, write to the Free
 Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
 Boston, MA 02110-1301, USA.</property>
     <property name="logo">./images/logo.png</property>
-    <signal handler="on_aboutdialog_destroy" name="destroy" swapped="no"/>
     <signal handler="on_aboutdialog_delete_event" name="delete-event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
@@ -44,7 +43,6 @@ Boston, MA 02110-1301, USA.</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
-            <signal handler="on_aboutdialog_destroy" name="destroy" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
