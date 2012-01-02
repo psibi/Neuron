@@ -2,24 +2,33 @@
 from pyfann import libfann
 import dbm
 import sys
+import gtk
 
-db=dbm.open('config.dat','c')
-talgo=db['Training Algorithm']
-bpn_type=db['Network Type']
-numl=int(db['Number of Layers'])
-num_input=int(db['Input Neurons'])
-num_output=int(db['Output Neurons'])
-num_neurons_hidden=int(db['Hidden Neurons'])
-num_hlay=int(db['Number of Hidden Layers'])
-connection_rate=float(db['Connection Rate'])
-learning_rate=float(db['Learning Rate'])
-desired_error=float(db['Desired Error'])
-max_iterations=int(db['Maximum Iterations'])
-iterations_between_reports=int(db['Iteration Between Reports'])
-ol_act_fun=db['Output Layer Activation Function']
-tfile=db['Training File']
-afile=db['Argument Data']
-db.close()
+try:
+    db=dbm.open('config.dat','c')
+    talgo=db['Training Algorithm']
+    bpn_type=db['Network Type']
+    numl=int(db['Number of Layers'])
+    num_input=int(db['Input Neurons'])
+    num_output=int(db['Output Neurons'])
+    num_neurons_hidden=int(db['Hidden Neurons'])
+    num_hlay=int(db['Number of Hidden Layers'])
+    connection_rate=float(db['Connection Rate'])
+    learning_rate=float(db['Learning Rate'])
+    desired_error=float(db['Desired Error'])
+    max_iterations=int(db['Maximum Iterations'])
+    iterations_between_reports=int(db['Iteration Between Reports'])
+    ol_act_fun=db['Output Layer Activation Function']
+    tfile=db['Training File']
+    afile=db['Argument Data']
+except KeyError as key:
+    dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK, str(key)+ " Uninitialized")
+    dlg.run()
+    dlg.destroy()
+    db.close()
+    sys.exit(1)
+finally:
+    db.close()
 
 class function_aprox:
     
