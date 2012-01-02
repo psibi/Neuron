@@ -5,7 +5,7 @@ import pygtk
 class cnetwork:
     """Window for configuring Network Type"""
     def __init__(self):
-        gladefile="network_conf.xml"
+        gladefile="./gui/network_conf.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("network_conf")
