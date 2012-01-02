@@ -8,7 +8,7 @@ from train_window import train_window
 class askparam_window:
     """Window For Asking Parameters about BPN Network"""
     def __init__(self,net):
-        gladefile="config_parameter.xml"
+        gladefile="./gui/config_parameter.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.type=net
@@ -58,11 +58,6 @@ class askparam_window:
             return False
         elif self.numh_text.get_text_length()==0:
             return False
-        elif self.type=="SPR":
-            if self.connrate_text.get_text_length()==0:
-                return False
-            else:
-                return True
         else:
             return True
 

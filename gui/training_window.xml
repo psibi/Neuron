@@ -21,6 +21,8 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Training Window</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <signal handler="on_train_window_destroy" name="destroy" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">

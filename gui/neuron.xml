@@ -6,8 +6,10 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About Neuron</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">mainwindow</property>
+    <property name="has_separator">True</property>
     <property name="program_name">Neuron</property>
     <property name="version">1.0</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2011-2012 Sibi
@@ -31,7 +33,7 @@ You should have received a copy of the GNU General Public
 License along with Neuron; if not, write to the Free 
 Software Foundation, Inc., 51 Franklin Street, Fifth Floor, 
 Boston, MA 02110-1301, USA.</property>
-    <property name="logo">./images/logo.png</property>
+    <property name="logo">../images/logo.png</property>
     <signal handler="on_aboutdialog_delete_event" name="delete-event" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">

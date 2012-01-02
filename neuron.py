@@ -25,7 +25,7 @@ class Neuron_TextViewOutput:
 class neuron:
     """Main Neuron Application"""
     def __init__(self):
-        gladefile="neuron.xml"
+        gladefile="./gui/neuron.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("mainwindow")
@@ -137,6 +137,8 @@ class neuron:
         if os.path.isfile('config.dat.db'):
             os.remove('config.dat.db')
             dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_INFO,gtk.BUTTONS_OK,"Neuron Dataset Cleaned")
+            dlg.run()
+            dlg.destroy()
         else:
             dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Neuron Dataset already Clean")
             dlg.run()

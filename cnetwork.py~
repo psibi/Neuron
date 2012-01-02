@@ -1,0 +1,7 @@
+#!/usr/bin/python
+class neuron:
+    """Main Neuron Application"""
+    def __init__(self):
+        gladefile="neuron.xml"
+        builder=gtk.Builder()
+        builder.add_from_file(gladefile)

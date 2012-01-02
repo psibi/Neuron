@@ -8,7 +8,7 @@ from ask_param import askparam_window
 class selectbpn_window:
     """Window For Selecting BPN Network"""
     def __init__(self):
-        gladefile="n_create.xml"
+        gladefile="./gui/n_create.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("create_window")
