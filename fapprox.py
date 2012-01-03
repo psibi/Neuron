@@ -37,12 +37,28 @@ class function_aprox:
         
     def test(self):
         print "BPN Network Training Details:\n"
-        self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
+        if bpn_type=="SPR":
+            self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
+        elif bpn_type=="STD":
+            self.ann.create_standard_array((num_input,num_neurons_hidden,num_output))
+        elif bpn_type=="SRT":
+            self.ann.create_standard_array((num_input,num_neurons_hidden,num_output))
+        if talgo=="FANN_TRAIN_INCREMENTAL":
+            self.ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
+        elif talgo=="FANN_TRAIN_BATCH":
+            self.ann.set_training_algorithm(libfann.TRAIN_BATCH)
+        elif talgo=="FANN_TRAIN_RPROP":
+            self.ann.set_training_algorithm(libfann.TRAIN_RPROP)
+        elif talgo=="FANN_TRAIN_QUICKPROP":
+            self.ann.set_training_algorithm(libfann.TRAIN_QUICKPROP)
         self.ann.set_learning_rate(learning_rate)
-        self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        if ol_act_fun=="SIGMODIAL FUNCTION":
+            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        elif ol_act_fun=="LINEAR FUNCTION":
+            self.ann.set_activation_function_output(libfann.LINEAR)
         self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
         print "\nFunction Approximation Details:"
-        fin=open("./dataset/xor.fa","r")
+        fin=open(afile,"r")
         inputs=fin.readlines()
         fin.close()
         width=20
