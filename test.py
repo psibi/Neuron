@@ -41,13 +41,22 @@ class bpn_test:
         train_data = libfann.training_data()
         train_data.read_train_from_file(tfile)
         ann = libfann.neural_net()
-        ann.create_sparse_array(connection_rate, (len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+        if bpn_type=="SPR":
+            ann.create_sparse_array(connection_rate, (len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+        elif bpn_type=="STD":
+            ann.create_standard_array((len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+        elif bpn_type=="SRT":
+            ann.create_shortcut_array((len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
         ann.set_learning_rate(learning_rate)
-        ann.set_activation_function_hidden(libfann.SIGMOID_SYMMETRIC_STEPWISE)
-        ann.set_activation_function_output(libfann.SIGMOID_STEPWISE)
-        ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
+        if talgo=="FANN_TRAIN_INCREMENTAL":
+            ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
+        elif talgo=="FANN_TRAIN_BATCH":
+            ann.set_training_algorithm(libfann.TRAIN_BATCH)
+        elif talgo=="FANN_TRAIN_RPROP":
+            ann.set_training_algorithm(libfann.TRAIN_RPROP)
+        elif talgo=="FANN_TRAIN_QUICKPROP":
+            ann.set_training_algorithm(libfann.TRAIN_QUICKPROP)
 	ann.train_on_data(train_data, max_iterations, iterations_between_reports, desired_error)
-	
         print "Testing network"
         test_data = libfann.training_data()
         test_data.read_train_from_file(test_file)
