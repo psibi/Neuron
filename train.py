@@ -4,6 +4,7 @@ import dbm
 import sys
 import gtk
 import shutil
+import os
 
 try:
     db=dbm.open('config.dat','c')
@@ -53,19 +54,25 @@ class bpn:
         elif talgo=="FANN_TRAIN_QUICKPROP":
             self.ann.set_training_algorithm(libfann.TRAIN_QUICKPROP)
         self.ann.set_learning_rate(learning_rate)
-        self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        if ol_act_fun=="SIGMODIAL FUNCTION":
+            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        elif ol_act_fun=="LINEAR FUNCTION":
+            self.ann.set_activation_function_output(libfann.LINEAR)
         self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
         fileparts=tfile.split('/')
         fileparts.reverse()
         name=fileparts[0]
         temp=name.split('.')
         self.network_file=temp[0]+".net"
-        network_fname="../"+temp[0]+".net"
+        network_fname="./dataset/"+temp[0]+".net"
         print "Neuron Network Also saved at "+ network_fname
         self.ann.save(self.network_file)
         self.move_network_file()
 
     def move_network_file(self):
+        filename="./dataset/"+self.network_file
+        if os.path.isfile(filename):
+            os.remove(filename)
         src=self.network_file
         dest="./dataset/"
         shutil.move(src,dest)
