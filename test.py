@@ -56,7 +56,13 @@ class bpn_test:
             ann.set_training_algorithm(libfann.TRAIN_RPROP)
         elif talgo=="FANN_TRAIN_QUICKPROP":
             ann.set_training_algorithm(libfann.TRAIN_QUICKPROP)
-	ann.train_on_data(train_data, max_iterations, iterations_between_reports, desired_error)
+        ann.set_learning_rate(learning_rate)
+        if ol_act_fun=="SIGMODIAL FUNCTION":
+            ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
+        elif ol_act_fun=="LINEAR FUNCTION":
+            ann.set_activation_function_output(libfann.LINEAR)
+        ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
+        #ann.print_parameters()
         print "Testing network"
         test_data = libfann.training_data()
         test_data.read_train_from_file(test_file)
