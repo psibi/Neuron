@@ -11,6 +11,8 @@ import subprocess
 from select_network import selectbpn_window
 from adv_train import adv_train
 from cnetwork import cnetwork
+from qprop import qprop
+from rprop import rprop
 
 class Neuron_TextViewOutput:
     def __init__(self,textview):
@@ -45,6 +47,8 @@ class neuron:
         self.algorithm_name=""
         self.filename=""
         self.loadfile=""
+        self.rpropw=None
+        self.qpropw=None
         sys.stdout=Neuron_TextViewOutput(self.ntextview)
         builder.connect_signals(self)
         self.aboutdialog.connect("response", lambda d,r: d.hide())
@@ -74,10 +78,16 @@ class neuron:
         elif self.algo_rprop.get_active():
             self.algorithm_name="FANN_TRAIN_RPROP"
             self.rprop.set_active(True)
+            if self.rpropw==None:
+                self.rpropw=rprop()
+                self.qpropw=None
             self.algorithm=True
         elif self.algo_qprop.get_active():
             self.algorithm_name="FANN_TRAIN_QUICKPROP"
             self.qprop.set_active(True)
+            if self.qpropw==None:
+                self.qpropw=qprop()
+                self.rpropw=None
             self.algorithm=True
         db=dbm.open('config.dat','c')
         db['Training Algorithm']=self.algorithm_name
@@ -90,8 +100,14 @@ class neuron:
             self.algo_batch.set_active(True)
         elif self.rprop.get_active():
             self.algo_rprop.set_active(True)
+            if self.rpropw==None:
+                self.rpropw=rprop()
+                self.qpropw=None
         elif self.qprop.get_active():
             self.algo_qprop.set_active(True)
+            if self.qpropw==None:
+                self.qpropw=qprop()
+                self.rpropw=None
 
     def on_talgo_window_delete_event(self,widget,data=None):
         self.talgo_window.hide()
