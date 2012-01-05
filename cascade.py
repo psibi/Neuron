@@ -1,12 +1,14 @@
 #!/usr/bin/python
 import gtk
 import pygtk
+import dbm
 
 class cascade:
-    def __init__(self):
+    def __init__(self,fixed_rb):
         gladefile="./gui/cascade.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
+        self.fixed_rb=fixed_rb
         self.window=builder.get_object("cascade_window")
         self.ocf_entry=builder.get_object("ocf_entry")
         self.ose_entry=builder.get_object("ose_entry")
@@ -46,13 +48,30 @@ class cascade:
 
     def on_ok(self,button,data=None):
         if self.validate():
-            pass #Open the db and add values Here"
+            db=dbm.open('config.dat','c')
+            db['Output Change Fraction']=self.ocf_entry.get_text()
+            db['Output Stagnation Epochs']=self.ose_entry.get_text()
+            db['Candidate Change Fraction']=self.ccf_entry.get_text()
+            db['Candidate Stagnation Epochs']=self.cse_entry.get_text()
+            db['Weight Multiplier']=self.wm_entry.get_text()
+            db['Candidate Limit']=self.cl_entry.get_text()
+            db['Maximum Out Epochs']=self.max_oe_entry.get_text()
+            db['Minimum Out Epochs']=self.min_oe_entry.get_text()
+            db['Maximum Candidate Epochs']=self.max_ce_entry.get_text()
+            db['Minimum Candidate Epochs']=self.min_ce_entry.get_text()
+            db.close()
+            self.window.destroy()
         else:
             em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Parameters Missing")
             em.run()
             em.destroy()
 
+    def on_cascade_window_delete_event(self,widget,data=None):
+        self.window.hide()
+        self.fixed_rb.set_active(True)
+        return True
+
 if __name__=="__main__":
-    cwindow=cascade()
+    cwindow=cascade(dum_rb)
     gtk.main()
             
