@@ -1,6 +1,8 @@
 #!/usr/bin/python
+#Bring cnetwork window and cascade window under single. Think b4 u do it.
 import gtk
 import pygtk
+from cascade import cascade
 
 class cnetwork:
     """Window for configuring Network Type"""
@@ -9,13 +11,17 @@ class cnetwork:
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
         self.window=builder.get_object("network_conf")
+        self.fixed_rb=builder.get_object("fixed_rb")
+        self.evolving_rb=builder.get_object("evolving_rb")
         builder.connect_signals(self)
 
     def on_ok(self,button,data=None):
-        self.window.destroy()
+        self.window.hide()
+        wcascade=cascade(self.fixed_rb)
+
 
     def on_cancel(self,button,data=None):
-        self.window.destroy()
+        self.window.hide()
         
     def show(self):
         self.window.show()
