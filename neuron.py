@@ -52,7 +52,8 @@ class neuron:
         sys.stdout=Neuron_TextViewOutput(self.ntextview)
         builder.connect_signals(self)
         self.aboutdialog.connect("response", lambda d,r: d.hide())
-        
+        self.cwindow=cnetwork()
+ 
     def write_neuron(self,string):
         buf=self.ntextview.get_buffer()
         textiter=buf.get_end_iter()
@@ -214,8 +215,7 @@ class neuron:
         atrain.show()
 
     def on_configure_menuitem_activate(self,widget,data=None):
-        cwindow=cnetwork()
-        cwindow.show()
+        self.cwindow.show()
 
     def on_aboutdialog_delete_event(self,widget,data=None):
         self.aboutdialog.hide()
