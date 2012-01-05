@@ -153,7 +153,6 @@ class neuron:
             db.close()
         else:
             dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Neuron Dataset is empty.")
-            dlg.text="Neuron Error"
             dlg.run()
             dlg.destroy()
 
