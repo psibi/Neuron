@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import gtk
 import pygtk
+import dbm
 
 class qprop:
     def __init__(self):
