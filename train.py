@@ -44,15 +44,40 @@ class bpn:
         elif bpn_type=="STD":
             self.ann.create_standard_array((num_input,num_neurons_hidden,num_output))
         elif bpn_type=="SRT":
-            self.ann.create_standard_array((num_input,num_neurons_hidden,num_output))
+            self.ann.create_shortcut_array((num_input,num_neurons_hidden,num_output))
         if talgo=="FANN_TRAIN_INCREMENTAL":
             self.ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
         elif talgo=="FANN_TRAIN_BATCH":
             self.ann.set_training_algorithm(libfann.TRAIN_BATCH)
         elif talgo=="FANN_TRAIN_RPROP":
             self.ann.set_training_algorithm(libfann.TRAIN_RPROP)
+            try:
+                db=dbm.open('config.dat','c')
+                inc_factor=float(db['Increase Factor'])
+                dec_factor=float(db['Decrease Factor'])
+                delta_min=float(db['Delta Minimum'])
+                delta_max=float(db['Delta Maximum'])
+                delta_zero=float(db['Delta Zero'])
+                db.close()
+            except KeyError:
+                pass
+            else:
+                self.ann.set_rprop_increase_factor(inc_factor)
+                self.ann.set_rprop_decrease_factor(dec_factor)
+                self.ann.set_rprop_delta_min(delta_min)
+                self.ann.set_rprop_delta_max(delta_max)
         elif talgo=="FANN_TRAIN_QUICKPROP":
             self.ann.set_training_algorithm(libfann.TRAIN_QUICKPROP)
+            try:
+                db=dbm.open('config.dat','c')
+                decay_val=float(db['Decay Value'])
+                mu_val=float(db['Mu Value'])
+                db.close()
+            except KeyError:
+                pass
+            else:
+                self.ann.set_quickprop_decay(decay_val)
+                self.ann.set_quickprop_mu(mu_val)
         self.ann.set_learning_rate(learning_rate)
         if ol_act_fun=="SIGMODIAL FUNCTION":
             self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
@@ -65,6 +90,7 @@ class bpn:
         temp=name.split('.')
         self.network_file=temp[0]+".net"
         network_fname="./dataset/"+temp[0]+".net"
+        self.ann.print_parameters()
         print "Neuron Network Also saved at "+ network_fname
         self.ann.save(self.network_file)
         self.move_network_file()
