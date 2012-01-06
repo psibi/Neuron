@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import gtk
 import pygtk
+import dbm
 
 class rprop:
     def __init__(self):
@@ -18,8 +19,8 @@ class rprop:
     def on_ok(self,button,data=None):
         if self.validate():
             db=dbm.open('config.dat','c')
-            db['Increase Factor']=self.decay_entry.get_text()
-            db['Decrease Factor']=self.mu_entry.get_text()
+            db['Increase Factor']=self.if_entry.get_text()
+            db['Decrease Factor']=self.df_entry.get_text()
             db['Delta Minimum']=self.dmin_entry.get_text()
             db['Delta Maximum']=self.dmax_entry.get_text()
             db['Delta Zero']=self.dzero_entry.get_text()
