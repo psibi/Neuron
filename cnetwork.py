@@ -16,9 +16,11 @@ class cnetwork:
         builder.connect_signals(self)
 
     def on_ok(self,button,data=None):
-        self.window.hide()
-        wcascade=cascade(self.fixed_rb)
-
+        if self.evolving_rb.get_active():
+            self.window.hide()
+            wcascade=cascade(self.fixed_rb)
+        else:
+            self.window.hide()
 
     def on_cancel(self,button,data=None):
         self.window.hide()
