@@ -6,6 +6,7 @@
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About Neuron</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">mainwindow</property>
@@ -13,7 +14,7 @@
     <property name="program_name">Neuron</property>
     <property name="version">1.0</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2011-2012 Sibi
-Copyright &#xA9; 2011-2012 Siddardth
+Copyright &#xA9; 2011-2012 Siddarth
 Copyright &#xA9; 2001-2010 Allwyn Jones</property>
     <property name="comments" translatable="yes">A Neural Network Simulator</property>
     <property name="website">http://github.com/psibi/Neuron</property>
@@ -250,9 +251,18 @@ Boston, MA 02110-1301, USA.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="label" translatable="yes">Configure</property>
+                        <property name="label" translatable="yes">Configure Fixed Topology</property>
                         <property name="use_underline">True</property>
                         <signal handler="on_train_config_activate" name="activate" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="evolving_train_config">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">Configure Evolving Topology</property>
+                        <property name="use_underline">True</property>
                       </object>
                     </child>
                   </object>
@@ -605,6 +615,7 @@ Boston, MA 02110-1301, USA.</property>
     <property name="height_request">300</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Select Training Algorithm</property>
+    <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="transient_for">mainwindow</property>
     <signal handler="on_talgo_window_delete_event" name="delete-event" swapped="no"/>
