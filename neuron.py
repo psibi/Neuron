@@ -43,6 +43,8 @@ class neuron:
         self.batch=builder.get_object("batch")
         self.rprop=builder.get_object("rprop")
         self.qprop=builder.get_object("qprop")
+        self.train_config=builder.get_object("train_config")
+        self.evolving_train_config=builder.get_object("evolving_train_config")
         self.algorithm=False
         self.algorithm_name=""
         self.filename=""
@@ -99,17 +101,7 @@ class neuron:
             self.algo_inc.set_active(True)
         elif self.batch.get_active():
             self.algo_batch.set_active(True)
-        elif self.rprop.get_active():
-            self.algo_rprop.set_active(True)
-            if self.rpropw==None:
-                self.rpropw=rprop()
-                self.qpropw=None
-        elif self.qprop.get_active():
-            self.algo_qprop.set_active(True)
-            if self.qpropw==None:
-                self.qpropw=qprop()
-                self.rpropw=None
-
+            
     def on_talgo_window_delete_event(self,widget,data=None):
         self.talgo_window.hide()
         return True
@@ -182,7 +174,17 @@ class neuron:
 
     def on_talgo_ok_button_clicked(self,widget,data=None):
         self.talgo_window.hide()
-
+        if self.rprop.get_active():
+            if self.rpropw==None:
+                self.rpropw=rprop()
+                self.qpropw=None
+                self.algo_rprop.set_active(True)
+        elif self.qprop.get_active():
+            if self.qpropw==None:
+                self.qpropw=qprop()
+                self.rpropw=None
+                self.algo_qprop.set_active(True)
+        
     def on_cleantext_click(self,widget,data=None):
         buf=gtk.TextBuffer()
         buf.set_text("")
