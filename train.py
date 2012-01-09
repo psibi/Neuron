@@ -83,7 +83,39 @@ class bpn:
             self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
         elif ol_act_fun=="LINEAR FUNCTION":
             self.ann.set_activation_function_output(libfann.LINEAR)
-        self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
+        #Find Out Whether it is Evolving topology or Fixed Topology
+        try:
+            db=dbm.open('config.dat','c')
+            ocf=db['Output Change Fraction']
+            tcascade=True
+        except KeyError:
+            tcascade=False
+        if tcascade:
+            db=dbm.open('config.dat','c')
+            ocf=float(db['Output Change Fraction'])
+            ose=int(db['Output Stagnation Epochs'])
+            ccf=float(db['Candidate Change Fraction'])
+            cse=float(db['Candidate Stagnation Epochs'])
+            wm=float(db['Weight Multiplier'])
+            cl=float(db['Candidate Limit'])
+            max_oe=int(db['Maximum Out Epochs'])
+            min_oe=int(db['Minimum Out Epochs'])
+            max_ce=int(db['Maximum Candidate Epochs'])
+            min_ce=int(db['Minimum Candidate Epochs'])
+            db.close()
+            self.ann.set_cascade_output_change_fraction(ocf)
+            self.ann.set_cascade_output_stagnation_epochs(ose)
+            self.ann.set_cascade_candidate_change_fraction(ccf)
+            self.ann.set_cascade_candidate_stagnation_epochs(cse)
+            self.ann.set_cascade_weight_multiplier(wm)
+            self.ann.set_cascade_candidate_limit(cl)
+            self.ann.set_cascade_max_out_epochs(max_oe)
+            self.ann.set_cascade_min_out_epochs(min_oe)
+            self.ann.set_cascade_max_cand_epochs(max_ce)
+            self.ann.set_cascade_min_cand_epochs(min_ce)
+            self.ann.cascadetrain_on_data(tfile,max_neurons,neurons_between_reports,desired_error)
+        else:
+            self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
         fileparts=tfile.split('/')
         fileparts.reverse()
         name=fileparts[0]
@@ -106,5 +138,3 @@ class bpn:
 if __name__=="__main__":
     network=bpn()
     network.train()
-
-        
