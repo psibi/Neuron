@@ -263,6 +263,7 @@ Boston, MA 02110-1301, USA.</property>
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Configure Evolving Topology</property>
                         <property name="use_underline">True</property>
+                        <signal handler="on_evolving_train_config_activate" name="activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
