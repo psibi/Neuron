@@ -4,11 +4,10 @@ import pygtk
 import dbm
 
 class cascade:
-    def __init__(self,fixed_rb):
+    def __init__(self):
         gladefile="./gui/cascade.xml"
         builder=gtk.Builder()
         builder.add_from_file(gladefile)
-        self.fixed_rb=fixed_rb
         self.window=builder.get_object("cascade_window")
         self.ocf_entry=builder.get_object("ocf_entry")
         self.ose_entry=builder.get_object("ose_entry")
@@ -68,10 +67,8 @@ class cascade:
 
     def on_cascade_window_delete_event(self,widget,data=None):
         self.window.hide()
-        self.fixed_rb.set_active(True)
         return True
 
 if __name__=="__main__":
-    cwindow=cascade(dum_rb)
+    cwindow=cascade()
     gtk.main()
-            
