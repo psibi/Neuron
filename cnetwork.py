@@ -2,7 +2,6 @@
 #Bring cnetwork window and cascade window under single. Think b4 u do it.
 import gtk
 import pygtk
-from cascade import cascade
 
 class cnetwork:
     """Window for configuring Network Type"""
@@ -18,7 +17,6 @@ class cnetwork:
     def on_ok(self,button,data=None):
         if self.evolving_rb.get_active():
             self.window.hide()
-            wcascade=cascade(self.fixed_rb)
         else:
             self.window.hide()
 
