@@ -13,6 +13,7 @@ from adv_train import adv_train
 from cnetwork import cnetwork
 from qprop import qprop
 from rprop import rprop
+from cascade import cascade
 
 class Neuron_TextViewOutput:
     def __init__(self,textview):
@@ -226,6 +227,9 @@ class neuron:
     def on_training_filechooser_delete_event(self,widget,data=None):
         self.fcdialog.hide()
         return True
+
+    def on_evolving_train_config_activate(self,radiobutton,data=None):
+        wcascade=cascade()
 
 if __name__=="__main__":
     neuron_window=neuron()
