@@ -61,6 +61,7 @@
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
             <property name="group">fixed_rb</property>
+            <signal handler="on_evolving_rb_toggled" name="toggled" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>
