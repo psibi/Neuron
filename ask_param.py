@@ -45,8 +45,13 @@ class askparam_window:
             db['Number of Hidden Layers']=self.numh_text.get_text()
             db.close()
             self.awindow.hide()
-            twindow=train_window()
-            
+            try:
+                db=dbm.open('config.dat','c')
+                temp=db['Maximum Neurons']
+                db.close()
+            except KeyError:
+                twindow=train_window()
+
     def validate_parameters(self):
         if self.numl_text.get_text_length()==0:
             return False
