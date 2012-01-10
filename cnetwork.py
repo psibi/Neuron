@@ -2,6 +2,7 @@
 #Bring cnetwork window and cascade window under single. Think b4 u do it.
 import gtk
 import pygtk
+from network_evol import Network_evol
 
 class cnetwork:
     """Window for configuring Network Type"""
@@ -17,6 +18,8 @@ class cnetwork:
     def on_ok(self,button,data=None):
         if self.evolving_rb.get_active():
             self.window.hide()
+            nwindow=Network_evol()
+            nwindow.show()
         else:
             self.window.hide()
 
@@ -25,6 +28,9 @@ class cnetwork:
         
     def show(self):
         self.window.show()
+
+    def on_evolving_rb_toggled(self,radiobutton,data=None):
+        pass
 
 if __name__=="__main__":
     cwindow=cnetwork()
