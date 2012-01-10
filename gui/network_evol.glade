@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<interface>
+<glade-interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="evol_window">
     <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Configure Network Parameters</property>
+    <property name="default_width">350</property>
+    <property name="default_height">200</property>
+    <signal name="delete-event" handler="on_evol_window_delete_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -150,6 +154,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_ok" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -158,13 +163,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button2">
+              <object class="GtkButton" id="cancel_button">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_cancel" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -182,4 +188,4 @@
       </object>
     </child>
   </object>
-</interface>
+</glade-interface>
