@@ -32,6 +32,9 @@ class cnetwork:
     def on_evolving_rb_toggled(self,radiobutton,data=None):
         pass
 
+    def on_network_conf_delete_event(self,widget,data=None):
+        self.window.hide()
+
 if __name__=="__main__":
     cwindow=cnetwork()
     cwindow.window.show()
