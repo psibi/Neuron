@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <interface>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="adv_train_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Configure Advanced Parameters</property>
@@ -60,6 +61,8 @@
                 <property name="invisible_char_set">True</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -106,6 +109,8 @@
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -125,10 +130,11 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkComboBox" id="combobox1">
+                      <object class="GtkComboBox" id="afn_combobox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="model">af_liststore</property>
+                        <property name="active">0</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext1"/>
                           <attributes>
@@ -250,6 +256,8 @@
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -269,10 +277,11 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkComboBox" id="combobox2">
+                      <object class="GtkComboBox" id="afl_combobox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="model">af_liststore</property>
+                        <property name="active">0</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext2"/>
                           <attributes>
@@ -333,6 +342,8 @@
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -387,6 +398,8 @@
                         <property name="invisible_char_set">True</property>
                         <property name="primary_icon_activatable">False</property>
                         <property name="secondary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">True</property>
+                        <property name="secondary_icon_sensitive">True</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -426,10 +439,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBox" id="combobox5">
+              <object class="GtkComboBox" id="tef_combobox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="model">tef_liststore</property>
+                <property name="active">0</property>
                 <child>
                   <object class="GtkCellRendererText" id="cellrenderertext5"/>
                   <attributes>
@@ -445,10 +459,11 @@
               </packing>
             </child>
             <child>
-              <object class="GtkComboBox" id="combobox6">
+              <object class="GtkComboBox" id="tsf_combobox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="model">tsf_liststore</property>
+                <property name="active">0</property>
                 <child>
                   <object class="GtkCellRendererText" id="cellrenderertext6"/>
                   <attributes>
@@ -471,6 +486,8 @@
                 <property name="invisible_char_set">True</property>
                 <property name="primary_icon_activatable">False</property>
                 <property name="secondary_icon_activatable">False</property>
+                <property name="primary_icon_sensitive">True</property>
+                <property name="secondary_icon_sensitive">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
