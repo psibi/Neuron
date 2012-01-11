@@ -1,5 +1,6 @@
 import gtk
 import pygtk
+import dbm
 
 class adv_train:
     """Configure Window for Setting Advanced Parameters on Training"""
@@ -15,10 +16,36 @@ class adv_train:
         self.vbox8=builder.get_object("vbox8")
         self.vbox10=builder.get_object("vbox10")
         self.af_liststore=builder.get_object("af_liststore")
+        self.afn_combobox=builder.get_object("afn_combobox")
+        self.afl_combobox=builder.get_object("afl_combobox")
+        self.lmomentum=builder.get_object("lmomentum")
+        self.af_neuron=builder.get_object("af_neuron")
+        self.af_layer=builder.get_object("af_layer")
+        self.as_neuron=builder.get_object("as_neuron")
+        self.as_layer=builder.get_object("as_layer")
+        self.tef_combobox=builder.get_object("tef_combobox")
+        self.tsf_combobox=builder.get_object("tsf_combobox")
+        self.bflimit=builder.get_object("bflimit")
         builder.connect_signals(self)
         
     def show(self):
         self.win.show()
+
+    def validate(self):
+        if self.lmomentum.get_text_length()==0:
+            return False
+        elif self.af_neuron.get_text_length()==0:
+            return False
+        elif self.af_layer.get_text_length()==0:
+            return False
+        elif self.as_neuron.get_text_length()==0:
+            return False
+        elif self.as_layer.get_text_length()==0:
+            return False
+        elif self.bflimit.get_text_length()==0:
+            return False
+        else:
+            return True
 
     def on_add_afn(self,button,data=None):
         entry=gtk.Entry()
@@ -30,7 +57,6 @@ class adv_train:
         self.vbox4.pack_start(entry,True,True,1)
         cb.show()
         entry.show()
-
 
     def on_add_afl(self,button,data=None):
         entry=gtk.Entry()
@@ -54,11 +80,29 @@ class adv_train:
         entry.show()
 
     def on_ok(self,button,data=None):
-        self.win.destroy()
+        if self.validate():
+            db=dbm.open('config.dat','c')
+            db['Learning Momentum']=self.lmomentum.get_text()
+            db['AF for Neuron']=self.af_neuron.get_text()
+            db['AF Neuron']=self.afn_combobox.get_active_text()
+            db['AF for layer']=self.af_layer.get_text()
+            db['AF Layer']=self.afl_combobox.get_active_text()
+            db['Activation Steepness for Neuron']=self.as_neuron.get_text()
+            db['Activation Steepness for layer']=self.as_layer.get_text()
+            db['Train Error Function']=self.tef_combobox.get_active_text()
+            db['Train Stop Function']=self.tsf_combobox.get_active_text()
+            db['Bit Fail Limit']=self.bflimit.get_text()
+            db.close()
+            self.win.destroy()            
+        else:
+            em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Parameters Not Completed")
+            em.run()
+            em.destroy()
 
     def on_cancel(self,button,data=None):
         self.win.destroy()
 
+    
 if __name__=="__main__":
     window=adv_train()
     window.win.show()
