@@ -80,10 +80,38 @@ class bpn:
                 self.ann.set_quickprop_decay(decay_val)
                 self.ann.set_quickprop_mu(mu_val)
         self.ann.set_learning_rate(learning_rate)
-        if ol_act_fun=="SIGMODIAL FUNCTION":
-            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
-        elif ol_act_fun=="LINEAR FUNCTION":
+        if ol_act_fun=="LINEAR":
             self.ann.set_activation_function_output(libfann.LINEAR)
+        elif ol_act_fun=="THRESHOLD":
+            self.ann.set_activation_function_output(libfann.THRESHOLD)
+        elif ol_act_fun=="THRESHOLD SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.THRESHOLD_SYMMETRIC)
+        elif ol_act_fun=="SIGMOID":
+            self.ann.set_activation_function_output(libfann.SIGMOID)
+        elif ol_act_fun=="SIGMOID STEPWISE":
+            self.ann.set_activation_function_output(libfann.SIGMOID_STEPWISE)
+        elif ol_act_fun=="SIGMOID SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC)
+        elif ol_act_fun=="GAUSSIAN":
+            self.ann.set_activation_function_output(libfann.GAUSSIAN)
+        elif ol_act_fun=="GAUSSIAN SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.GAUSSIAN_SYMMETRIC)
+        elif ol_act_fun=="ELLIOT":
+            self.ann.set_activation_function_output(libfann.ELLIOT)
+        elif ol_act_fun=="ELLIOT SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.ELLIOT_SYMMETRIC)
+        elif ol_act_fun=="LINEAR PIECE":
+            self.ann.set_activation_function_output(libfann.LINEAR_PIECE)
+        elif ol_act_fun=="LINEAR PIECE SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.LINEAR_PIECE_SYMMETRIC)
+        elif ol_act_fun=="SIN SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.SIN_SYMMETRIC)
+        elif ol_act_fun=="COS SYMMETRIC":
+            self.ann.set_activation_function_output(libfann.COS_SYMMETRIC)
+        elif ol_act_fun=="SIN":
+            self.ann.set_activation_function_output(libfann.SIN)
+        elif ol_act_fun=="COS":
+            self.ann.set_activation_function_output(libfann.COS)            
         #For Advanced Parameters related to Fixed Topology
         try:
             db=dbm.open('config.dat','c')
@@ -114,14 +142,78 @@ class bpn:
             vslayer=int(steep_layer_list[1])
             if af_n=="LINEAR":
                 self.ann.set_activation_function(libfann.LINEAR,layer_no,neuron_no)
+            elif af_n=="THRESHOLD":
+                self.ann.set_activation_function(libfann.THRESHOLD,layer_no,neuron_no)
+            elif af_n=="THRESHOLD SYMMETRIC":
+                self.ann.set_activation_function(libfann.THRESHOLD_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="SIGMOID":
+                self.ann.set_activation_function(libfann.SIGMOID,layer_no,neuron_no)
+            elif af_n=="SIGMOID STEPWISE":
+                self.ann.set_activation_function(libfann.SIGMOID_STEPWISE,layer_no,neuron_no)
+            elif af_n=="SIGMOID SYMMETRIC":
+                self.ann.set_activation_function(libfann.SIGMOID_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="GAUSSIAN":
+                self.ann.set_activation_function(libfann.GAUSSIAN,layer_no,neuron_no)
+            elif af_n=="GAUSSIAN SYMMETRIC":
+                self.ann.set_activation_function(libfann.GAUSSIAN_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="ELLIOT":
+                self.ann.set_activation_function(libfann.ELLIOT,layer_no,neuron_no)
+            elif af_n=="ELLIOT SYMMETRIC":
+                self.ann.set_activation_function(libfann.ELLIOT_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="LINEAR PIECE":
+                self.ann.set_activation_function(libfann.LINEAR_PIECE,layer_no,neuron_no)
+            elif af_n=="LINEAR PIECE SYMMETRIC":
+                self.ann.set_activation_function(libfann.LINEAR_PIECE_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="SIN SYMMETRIC":
+                self.ann.set_activation_function(libfann.SIN_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="COS SYMMETRIC":
+                self.ann.set_activation_function(libfann.COS_SYMMETRIC,layer_no,neuron_no)
+            elif af_n=="SIN":
+                self.ann.set_activation_function(libfann.SIN,layer_no,neuron_no)
+            elif af_n=="COS":
+                self.ann.set_activation_function(libfann.COS,layer_no,neuron_no)
             if af_l=="LINEAR":
                 self.ann.set_activation_function_layer(libfann.LINEAR,af_layer_number)
+            elif af_l=="THRESHOLD":
+                self.ann.set_activation_function(libfann.THRESHOLD,layer_no,neuron_no)
+            elif af_l=="THRESHOLD SYMMETRIC":
+                self.ann.set_activation_function(libfann.THRESHOLD_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="SIGMOID":
+                self.ann.set_activation_function(libfann.SIGMOID,layer_no,neuron_no)
+            elif af_l=="SIGMOID STEPWISE":
+                self.ann.set_activation_function(libfann.SIGMOID_STEPWISE,layer_no,neuron_no)
+            elif af_l=="SIGMOID SYMMETRIC":
+                self.ann.set_activation_function(libfann.SIGMOID_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="GAUSSIAN":
+                self.ann.set_activation_function(libfann.GAUSSIAN,layer_no,neuron_no)
+            elif af_l=="GAUSSIAN SYMMETRIC":
+                self.ann.set_activation_function(libfann.GAUSSIAN_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="ELLIOT":
+                self.ann.set_activation_function(libfann.ELLIOT,layer_no,neuron_no)
+            elif af_l=="ELLIOT SYMMETRIC":
+                self.ann.set_activation_function(libfann.ELLIOT_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="LINEAR PIECE":
+                self.ann.set_activation_function(libfann.LINEAR_PIECE,layer_no,neuron_no)
+            elif af_l=="LINEAR PIECE SYMMETRIC":
+                self.ann.set_activation_function(libfann.LINEAR_PIECE_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="SIN SYMMETRIC":
+                self.ann.set_activation_function(libfann.SIN_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="COS SYMMETRIC":
+                self.ann.set_activation_function(libfann.COS_SYMMETRIC,layer_no,neuron_no)
+            elif af_l=="SIN":
+                self.ann.set_activation_function(libfann.SIN,layer_no,neuron_no)
+            elif af_l=="COS":
+                self.ann.set_activation_function(libfann.COS,layer_no,neuron_no)
             self.ann.set_activation_steepness(svalue,layer,neuron)
             self.ann.set_activation_steepness_layer(vsteep,vslayer)
             if tef=="LINEAR":
                 self.ann.set_train_error_function(libfann.ERRORFUNC_LINEAR)
+            elif tef=="TANH ERROR FUNCTION":
+                self.ann.set_train_error_function(libfann.ERRORFUNC_TANH)
             if tsf=="MSE":
                 self.ann.set_train_stop_function(libfann.STOPFUNC_MSE)
+            elif tsf=="BIT FAIL":
+                self.ann.set_train_stop_function(libfann.FANN_STOPFUNC_BIT)
             self.ann.set_bit_fail_limit(bfl)
         finally:
             db.close()
