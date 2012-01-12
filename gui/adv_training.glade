@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glade-interface>
+<interface>
   <requires lib="gtk+" version="2.24"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="adv_train_window">
@@ -579,6 +579,48 @@
       <row>
         <col id="0" translatable="yes">THRESHOLD</col>
       </row>
+      <row>
+        <col id="0" translatable="yes">THRESHOLD SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID STEPWISE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GAUSSIAN</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GAUSSIAN SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ELLIOT</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ELLIOT SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">LINEAR PIECE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">LINEAR PIECE SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIN SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">COS SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIN</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">COS</col>
+      </row>
     </data>
   </object>
   <object class="GtkListStore" id="tef_liststore">
@@ -609,4 +651,4 @@
       </row>
     </data>
   </object>
-</glade-interface>
+</interface>
