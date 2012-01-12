@@ -1,17 +1,59 @@
 <?xml version="1.0"?>
 <interface>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkListStore" id="liststore1">
+  <object class="GtkListStore" id="af_liststore">
     <columns>
-      <!-- column-name FUNCTION -->
+      <!-- column-name FUNCTIONS -->
       <column type="gchararray"/>
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">SIGMODIAL FUNCTION</col>
+        <col id="0" translatable="yes">LINEAR</col>
       </row>
       <row>
-        <col id="0" translatable="yes">LINEAR FUNCTION</col>
+        <col id="0" translatable="yes">THRESHOLD</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">THRESHOLD SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID STEPWISE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIGMOID SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GAUSSIAN</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">GAUSSIAN SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ELLIOT</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">ELLIOT SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">LINEAR PIECE</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">LINEAR PIECE SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIN SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">COS SYMMETRIC</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">SIN</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">COS</col>
       </row>
     </data>
   </object>
@@ -156,7 +198,7 @@
                   <object class="GtkComboBox" id="function_cb">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="model">liststore1</property>
+                    <property name="model">af_liststore</property>
                     <property name="active">0</property>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext1"/>
@@ -271,7 +313,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">5</property>
-            <property name="layout_style">end</property>
+            <property name="layout_style">center</property>
             <child>
               <object class="GtkButton" id="ok_button">
                 <property name="label">gtk-ok</property>
