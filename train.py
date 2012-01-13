@@ -277,7 +277,6 @@ class bpn:
         temp=name.split('.')
         self.network_file=temp[0]+".net"
         network_fname="./dataset/"+temp[0]+".net"
-        self.ann.print_parameters()
         print "Neuron Network Also saved at "+ network_fname
         self.ann.save(self.network_file)
         self.move_network_file()
@@ -294,3 +293,5 @@ class bpn:
 if __name__=="__main__":
     network=bpn()
     network.train()
+
+
