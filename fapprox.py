@@ -24,19 +24,22 @@ finally:
     db.close()
 
 class function_aprox:
-    
+    """Class for Function Approximation against the input data."""
     def __init__(self):
         self.ann = libfann.neural_net()
-        
+        self.network_file=""
+
     def test(self):
+        """For testing the Network and approximating the value of a function."""
         print "BPN Network Training Details:\n"
-                db=dbm.open('config.dat','c')
+        db=dbm.open('config.dat','c')
         connection_rate=float(db['Connection Rate'])
         learning_rate=float(db['Learning Rate'])
         desired_error=float(db['Desired Error'])
         max_iterations=int(db['Maximum Iterations'])
         iterations_between_reports=int(db['Iteration Between Reports'])
         ol_act_fun=db['Output Layer Activation Function']
+        self.network_file=db['Argument Data']
         db.close()
         if bpn_type=="SPR":
             self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
@@ -268,6 +271,7 @@ class function_aprox:
         else:
             self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
         print "\nFunction Approximation Details:"
+        afile=self.network_file
         fin=open(afile,"r")
         inputs=fin.readlines()
         fin.close()

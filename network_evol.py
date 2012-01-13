@@ -4,6 +4,7 @@ import pygtk
 import dbm
 
 class Network_evol:
+    """Window for Evolving topology Network."""
     def __init__(self):
         gladefile="./gui/network_evol.xml"
         builder=gtk.Builder()
@@ -15,9 +16,11 @@ class Network_evol:
         builder.connect_signals(self)
     
     def show(self):
+        """For displaying the window."""
         self.window.show()
 
     def on_ok(self,button,data=None):
+        """Handler for OK button on the window when it is clicked."""
         if self.validate():
             db=dbm.open('config.dat','c')
             db['Maximum Neurons']=self.maxn_entry.get_text()
@@ -31,9 +34,11 @@ class Network_evol:
             em.destroy()
 
     def on_cancel(self,button,data=None):
+        """Handler for the Cancel button on the window when it is clicked."""
         self.window.destroy()
 
     def validate(self):
+        """For validating the Entry present in the window."""
         if self.maxn_entry.get_text_length()==0:
             return False
         elif self.nbr_entry.get_text_length()==0:
@@ -44,6 +49,7 @@ class Network_evol:
             return True
         
     def on_evol_window_delete_event(self,widget,data=None):
+        """Handler for the delete event in the window."""
         self.window.destroy()
         return True
 

@@ -4,6 +4,7 @@ import pygtk
 import dbm
 
 class qprop:
+    """Window for QPROP Algorithm parameters."""
     def __init__(self):
         gladefile="./gui/qprop.xml"
         builder=gtk.Builder()
@@ -14,6 +15,7 @@ class qprop:
         builder.connect_signals(self)
 
     def on_ok(self,button,data=None):
+        """Handler for the OK button present."""
         if self.validate():
             db=dbm.open('config.dat','c')
             db['Decay Value']=self.decay_entry.get_text()
@@ -26,9 +28,11 @@ class qprop:
             em.destroy()
 
     def on_cancel(self,button,data=None):
+        """Handler for the Cancel button present."""
         self.window.destroy()
 
     def validate(self):
+        """For validating the Entry present in the window."""
         if self.decay_entry.get_text_length()==0:
             return False
         elif self.mu_entry.get_text_length()==0:
@@ -37,6 +41,7 @@ class qprop:
             return True
 
     def on_qprop_window_delete_event(self,widget,data=None):
+        """Handler for the delete event present in the window."""
         self.window.destroy()
         return True
 

@@ -25,12 +25,13 @@ finally:
     db.close()
 
 class bpn_test:
-
+    """Class for testing BPN network and returning MSE on the network."""
     def __init__(self):
         self.ann = libfann.neural_net()
         self.network_file=""
 
     def test(self):
+        """Test's the BPN Network."""
         print "Creating network."	
         db=dbm.open('config.dat','c')
         connection_rate=float(db['Connection Rate'])

@@ -4,6 +4,7 @@ import pygtk
 import dbm
 
 class cascade:
+    """Window For Cascade Training in the Neuron Simulator"""
     def __init__(self):
         gladefile="./gui/cascade.xml"
         builder=gtk.Builder()
@@ -22,6 +23,7 @@ class cascade:
         builder.connect_signals(self)
 
     def validate(self):
+        """To validate the Entry present in the Cascade Window."""
         if self.ocf_entry.get_text_length()==0:
             return False
         elif self.ose_entry.get_text_length()==0:
@@ -46,6 +48,7 @@ class cascade:
             return True
 
     def on_ok(self,button,data=None):
+        """Handler for the OK button present in the Cascade Window."""
         if self.validate():
             db=dbm.open('config.dat','c')
             db['Output Change Fraction']=self.ocf_entry.get_text()
@@ -66,6 +69,7 @@ class cascade:
             em.destroy()
 
     def on_cascade_window_delete_event(self,widget,data=None):
+        """Handler for the delete event in the Cascade Window."""
         self.window.hide()
         return True
 

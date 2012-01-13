@@ -26,12 +26,14 @@ finally:
     db.close()
 
 class bpn:
+    """Class for training the BPN Network."""
     def __init__(self):
         print "Training Initialization taking place\n"
         self.ann = libfann.neural_net()
         self.network_file=""
 
     def train(self):
+        """Trains the BPN network."""
         db=dbm.open('config.dat','c')
         connection_rate=float(db['Connection Rate'])
         learning_rate=float(db['Learning Rate'])
@@ -281,6 +283,7 @@ class bpn:
         self.move_network_file()
 
     def move_network_file(self):
+        """Move the Network file under the dataset folder."""
         filename="./dataset/"+self.network_file
         if os.path.isfile(filename):
             os.remove(filename)

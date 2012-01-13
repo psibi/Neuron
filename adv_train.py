@@ -29,9 +29,11 @@ class adv_train:
         builder.connect_signals(self)
         
     def show(self):
+        """For displaying the Advanced Training Window."""
         self.win.show()
 
     def validate(self):
+        """For Validating the GTK Enty widgets present in the window."""
         if self.lmomentum.get_text_length()==0:
             return False
         elif self.af_neuron.get_text_length()==0:
@@ -48,6 +50,8 @@ class adv_train:
             return True
 
     def on_add_afn(self,button,data=None):
+        """For dynamically adding Entry Box and Comboxbox
+        related to Activation Function of a neuron on clicking the + button."""
         entry=gtk.Entry()
         cb = gtk.ComboBox(self.af_liststore)
         cell=gtk.CellRendererText()
@@ -59,6 +63,8 @@ class adv_train:
         entry.show()
 
     def on_add_afl(self,button,data=None):
+        """For dynamically adding Entry box and Combobox related to Activation
+        Function of a layer on clicking the + button."""
         entry=gtk.Entry()
         cb = gtk.ComboBox(self.af_liststore)
         cell=gtk.CellRendererText()
@@ -70,16 +76,21 @@ class adv_train:
         entry.show()        
 
     def on_add_asn(self,button,data=None):
+        """For dynamically adding Entry box for Activation Steepness for
+        a neuron."""
         entry=gtk.Entry()
         self.vbox8.pack_start(entry,True,True,1)
         entry.show()
 
     def on_add_asl(self,button,data=None):
+        """For dynamically adding Entry box for Activation Steepness for
+        a layer."""
         entry=gtk.Entry()
         self.vbox10.pack_start(entry,True,True,1)
         entry.show()
 
     def on_ok(self,button,data=None):
+        """Handler for the OK button in the Advanced Training Window."""
         if self.validate():
             db=dbm.open('config.dat','c')
             db['Learning Momentum']=self.lmomentum.get_text()
@@ -100,6 +111,7 @@ class adv_train:
             em.destroy()
 
     def on_cancel(self,button,data=None):
+        """Handler for the Cancel button in the Advanced Training Window."""
         self.win.destroy()
 
     

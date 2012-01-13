@@ -21,6 +21,7 @@ class train_window:
         builder.connect_signals(self)
 
     def on_ok(self,widget,data=None):
+        """Handler for the OK button."""
         if not self.Validate_form():
             em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Training Parameters Not Completed")
             em.run()
@@ -37,6 +38,7 @@ class train_window:
             self.train_window.hide()
 
     def Validate_form(self):
+        """Validates the form so that no Entry box is empty."""
         if self.connrate.get_text_length()==0:
             return False
         elif self.lrate.get_text_length()==0:
@@ -53,6 +55,7 @@ class train_window:
             return True
     
     def pack_param(self):
+        """Packs parameter into a list."""
         if self.Validate_form():
             crate=self.connrate.get_text()
             lrate=self.lrate.get_text()
@@ -67,6 +70,7 @@ class train_window:
 
 
     def on_train_window_destroy(self,widget,data=None):
+        """Destroy Event handler for the window."""
         self.train_window.destroy()
 
 if __name__=="__main__":

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-#Bring cnetwork window and cascade window under single. Think b4 u do it.
 import gtk
 import pygtk
 from network_evol import Network_evol
@@ -16,6 +15,7 @@ class cnetwork:
         builder.connect_signals(self)
 
     def on_ok(self,button,data=None):
+        """Handler for the OK button present in the cnetwork window."""
         if self.evolving_rb.get_active():
             self.window.hide()
             nwindow=Network_evol()
@@ -24,15 +24,18 @@ class cnetwork:
             self.window.hide()
 
     def on_cancel(self,button,data=None):
+        """Handler for the Cancel button present in the cnetwork."""
         self.window.hide()
         
     def show(self):
+        """For showing the Configure Network Type(cnetwork) window."""
         self.window.show()
 
     def on_evolving_rb_toggled(self,radiobutton,data=None):
         pass
 
     def on_network_conf_delete_event(self,widget,data=None):
+        """Delete event handler for the cnetwork window."""
         self.window.hide()
 
 if __name__=="__main__":

@@ -4,6 +4,7 @@ import pygtk
 import dbm
 
 class rprop:
+    """Window for displaying parameters related to RPROP algorithm."""
     def __init__(self):
         gladefile="./gui/rprop.xml"
         builder=gtk.Builder()
@@ -17,6 +18,7 @@ class rprop:
         builder.connect_signals(self)
 
     def on_ok(self,button,data=None):
+        """Handler for the OK button which is invoked when it is clicked."""
         if self.validate():
             db=dbm.open('config.dat','c')
             db['Increase Factor']=self.if_entry.get_text()
@@ -32,9 +34,11 @@ class rprop:
             em.destroy()
 
     def on_cancel(self,button,data=None):
+        """Handler for the cancel button which is invoked when it is clicked."""
         self.window.destroy()
 
     def validate(self):
+        """For validating the Entry present in the window."""
         if self.if_entry.get_text_length()==0:
             return False
         elif self.df_entry.get_text_length()==0:
@@ -49,6 +53,7 @@ class rprop:
             return True
 
     def on_rprop_window_delete_event(self,widget,data=None):
+        """Delete event handler in the window."""
         self.window.destroy()
         return True
 

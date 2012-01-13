@@ -28,9 +28,12 @@ class askparam_window:
         builder.connect_signals(self)
 
     def on_config_standard_destroy(self,widget,data=None):
+        """Handler for the destroy event for the window."""
         self.awindow.destroy()
 
     def on_ok(self,widget,data=None):
+        """Handler for the OK button for the window which is raised
+        whenever it is clicked"""
         if not self.validate_parameters():
             em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"BPN Network Parameters Not Completed")
             em.run()
@@ -53,6 +56,7 @@ class askparam_window:
                 twindow=train_window()
 
     def validate_parameters(self):
+        """For Validating the Entry present in the Ask Parameter Window"""
         if self.numl_text.get_text_length()==0:
             return False
         elif self.inputn_text.get_text_length()==0:

@@ -20,9 +20,11 @@ class selectbpn_window:
         self.standard.toggled()
 
     def on_create_window_destroy(self,widget,data=None):
+        """Destroy Event handler in the window."""
         self.window.destroy()
 
     def on_network_selection(self,radiomenuitem,data=None):
+        """This method invoked whenever the radiobutton emits a toggled signal."""
         if self.standard.get_active():
             del self.network[:]
             self.network.append("STD")
@@ -34,9 +36,11 @@ class selectbpn_window:
             self.network.append("SRT")
 
     def get_network(self):
+        """Return the BPN network selected."""
         return self.network
 
     def on_next(self,widget,data=None):
+        """Handler invoked on clicking the Next button."""
         db=dbm.open('config.dat','c')
         db['network']=self.network[0]
         db.close()
