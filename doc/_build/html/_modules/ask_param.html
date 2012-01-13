@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ask_param &mdash; Neuron v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Neuron v1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for ask_param</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">gtk</span>
+<span class="kn">import</span> <span class="nn">pygtk</span>
+<span class="kn">import</span> <span class="nn">dbm</span>
+<span class="kn">from</span> <span class="nn">train_window</span> <span class="kn">import</span> <span class="n">train_window</span>
+
+<div class="viewcode-block" id="askparam_window"><a class="viewcode-back" href="../index.html#ask_param.askparam_window">[docs]</a><span class="k">class</span> <span class="nc">askparam_window</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Window For Asking Parameters about BPN Network&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">net</span><span class="p">):</span>
+        <span class="n">gladefile</span><span class="o">=</span><span class="s">&quot;./gui/config_parameter.xml&quot;</span>
+        <span class="n">builder</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">add_from_file</span><span class="p">(</span><span class="n">gladefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">=</span><span class="n">net</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">awindow</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;config_standard&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clabel</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;config_label&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numl_text</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;numl_text&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputn_text</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;inputn_text&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputn_text</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;outputn_text&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hiddenn_text</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;hiddenn_text&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numh_text</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;numh_text&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">net</span> <span class="o">==</span> <span class="s">&quot;SPR&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clabel</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&quot;Enter Sparse BPN Parameters&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">net</span> <span class="o">==</span> <span class="s">&quot;STD&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clabel</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&quot;Enter Standard BPN Parameters&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">net</span> <span class="o">==</span> <span class="s">&quot;SRT&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clabel</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s">&quot;Enter Shortcut BPN Parameters&quot;</span><span class="p">)</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="askparam_window.on_config_standard_destroy"><a class="viewcode-back" href="../index.html#ask_param.askparam_window.on_config_standard_destroy">[docs]</a>    <span class="k">def</span> <span class="nf">on_config_standard_destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the destroy event for the window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">awindow</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="askparam_window.on_ok"><a class="viewcode-back" href="../index.html#ask_param.askparam_window.on_ok">[docs]</a>    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the OK button for the window which is raised</span>
+<span class="sd">        whenever it is clicked&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_parameters</span><span class="p">():</span>
+            <span class="n">em</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_MODAL</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_ERROR</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span><span class="s">&quot;BPN Network Parameters Not Completed&quot;</span><span class="p">)</span>
+            <span class="n">em</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">em</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Network Type&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Number of Layers&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">numl_text</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Input Neurons&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inputn_text</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Neurons&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">outputn_text</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Hidden Neurons&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hiddenn_text</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Number of Hidden Layers&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">numh_text</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">awindow</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+                <span class="n">temp</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Neurons&#39;</span><span class="p">]</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">twindow</span><span class="o">=</span><span class="n">train_window</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="askparam_window.validate_parameters"><a class="viewcode-back" href="../index.html#ask_param.askparam_window.validate_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">validate_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For Validating the Entry present in the Ask Parameter Window&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">numl_text</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputn_text</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputn_text</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">hiddenn_text</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">numh_text</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">create_window</span><span class="o">=</span><span class="n">askparam_window</span><span class="p">(</span><span class="s">&quot;SPR&quot;</span><span class="p">)</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sibi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

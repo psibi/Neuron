@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>train &mdash; Neuron v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Neuron v1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for train</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="kn">from</span> <span class="nn">pyfann</span> <span class="kn">import</span> <span class="n">libfann</span>
+<span class="kn">import</span> <span class="nn">dbm</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">gtk</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+    <span class="n">talgo</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Training Algorithm&#39;</span><span class="p">]</span>
+    <span class="n">bpn_type</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Network Type&#39;</span><span class="p">]</span>
+    <span class="n">numl</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Number of Layers&#39;</span><span class="p">])</span>
+    <span class="n">num_input</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Input Neurons&#39;</span><span class="p">])</span>
+    <span class="n">num_output</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Neurons&#39;</span><span class="p">])</span>
+    <span class="n">num_neurons_hidden</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Hidden Neurons&#39;</span><span class="p">])</span>
+    <span class="n">num_hlay</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Number of Hidden Layers&#39;</span><span class="p">])</span>
+    <span class="n">tfile</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Training File&#39;</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">key</span><span class="p">:</span>
+    <span class="n">dlg</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_ERROR</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">+</span> <span class="s">&quot; Uninitialized&quot;</span><span class="p">)</span>
+    <span class="n">dlg</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="n">dlg</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="c">#sys.exit(1)</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="bpn"><a class="viewcode-back" href="../index.html#train.bpn">[docs]</a><span class="k">class</span> <span class="nc">bpn</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class for training the BPN Network.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;Training Initialization taking place</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ann</span> <span class="o">=</span> <span class="n">libfann</span><span class="o">.</span><span class="n">neural_net</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_file</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+
+<div class="viewcode-block" id="bpn.train"><a class="viewcode-back" href="../index.html#train.bpn.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Trains the BPN network.&quot;&quot;&quot;</span>
+        <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+        <span class="n">connection_rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Connection Rate&#39;</span><span class="p">])</span>
+        <span class="n">learning_rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Learning Rate&#39;</span><span class="p">])</span>
+        <span class="n">desired_error</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Desired Error&#39;</span><span class="p">])</span>
+        <span class="n">max_iterations</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Iterations&#39;</span><span class="p">])</span>
+        <span class="n">iterations_between_reports</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Iteration Between Reports&#39;</span><span class="p">])</span>
+        <span class="n">ol_act_fun</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Layer Activation Function&#39;</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">bpn_type</span><span class="o">==</span><span class="s">&quot;SPR&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">create_sparse_array</span><span class="p">(</span><span class="n">connection_rate</span><span class="p">,</span> <span class="p">(</span><span class="n">num_input</span><span class="p">,</span> <span class="n">num_neurons_hidden</span><span class="p">,</span> <span class="n">num_output</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">bpn_type</span><span class="o">==</span><span class="s">&quot;STD&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">create_standard_array</span><span class="p">((</span><span class="n">num_input</span><span class="p">,</span><span class="n">num_neurons_hidden</span><span class="p">,</span><span class="n">num_output</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">bpn_type</span><span class="o">==</span><span class="s">&quot;SRT&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">create_shortcut_array</span><span class="p">((</span><span class="n">num_input</span><span class="p">,</span><span class="n">num_neurons_hidden</span><span class="p">,</span><span class="n">num_output</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">talgo</span><span class="o">==</span><span class="s">&quot;FANN_TRAIN_INCREMENTAL&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_training_algorithm</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">TRAIN_INCREMENTAL</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">talgo</span><span class="o">==</span><span class="s">&quot;FANN_TRAIN_BATCH&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_training_algorithm</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">TRAIN_BATCH</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">talgo</span><span class="o">==</span><span class="s">&quot;FANN_TRAIN_RPROP&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_training_algorithm</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">TRAIN_RPROP</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+                <span class="n">inc_factor</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Increase Factor&#39;</span><span class="p">])</span>
+                <span class="n">dec_factor</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Decrease Factor&#39;</span><span class="p">])</span>
+                <span class="n">delta_min</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Delta Minimum&#39;</span><span class="p">])</span>
+                <span class="n">delta_max</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Delta Maximum&#39;</span><span class="p">])</span>
+                <span class="n">delta_zero</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Delta Zero&#39;</span><span class="p">])</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_rprop_increase_factor</span><span class="p">(</span><span class="n">inc_factor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_rprop_decrease_factor</span><span class="p">(</span><span class="n">dec_factor</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_rprop_delta_min</span><span class="p">(</span><span class="n">delta_min</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_rprop_delta_max</span><span class="p">(</span><span class="n">delta_max</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">talgo</span><span class="o">==</span><span class="s">&quot;FANN_TRAIN_QUICKPROP&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_training_algorithm</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">TRAIN_QUICKPROP</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+                <span class="n">decay_val</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Decay Value&#39;</span><span class="p">])</span>
+                <span class="n">mu_val</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Mu Value&#39;</span><span class="p">])</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_quickprop_decay</span><span class="p">(</span><span class="n">decay_val</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_quickprop_mu</span><span class="p">(</span><span class="n">mu_val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_learning_rate</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;LINEAR&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;THRESHOLD&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;THRESHOLD SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;SIGMOID&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;SIGMOID STEPWISE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_STEPWISE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;SIGMOID SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;GAUSSIAN&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;GAUSSIAN SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;ELLIOT&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;ELLIOT SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;SIN SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;COS SYMMETRIC&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS_SYMMETRIC</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;SIN&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ol_act_fun</span><span class="o">==</span><span class="s">&quot;COS&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_output</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS</span><span class="p">)</span>            
+        <span class="c">#For Advanced Parameters related to Fixed Topology</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">lmomentum</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Learning Momentum&#39;</span><span class="p">])</span>
+            <span class="n">af_neuron_number</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;AF for Neuron&#39;</span><span class="p">]</span>
+            <span class="n">af_n</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;AF Neuron&#39;</span><span class="p">]</span>
+            <span class="n">af_layer_number</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;AF for layer&#39;</span><span class="p">])</span>
+            <span class="n">af_l</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;AF Layer&#39;</span><span class="p">]</span>
+            <span class="n">asn</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Activation Steepness for Neuron&#39;</span><span class="p">]</span>
+            <span class="n">asl</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Activation Steepness for layer&#39;</span><span class="p">]</span>
+            <span class="n">tef</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Train Error Function&#39;</span><span class="p">]</span>
+            <span class="n">tsf</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Train Stop Function&#39;</span><span class="p">]</span>
+            <span class="n">bfl</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Bit Fail Limit&#39;</span><span class="p">])</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_learning_momentum</span><span class="p">(</span><span class="n">lmomentum</span><span class="p">)</span>
+            <span class="n">temp_list</span><span class="o">=</span><span class="n">af_neuron_number</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">layer_no</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">temp_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">neuron_no</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">temp_list</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">steepness_list</span><span class="o">=</span><span class="n">asn</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">svalue</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">steepness_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">layer</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steepness_list</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">neuron</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steepness_list</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">steep_layer_list</span><span class="o">=</span><span class="n">asl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">vsteep</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">steep_layer_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">vslayer</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">steep_layer_list</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;LINEAR&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;THRESHOLD&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;THRESHOLD SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;SIGMOID&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;SIGMOID STEPWISE&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_STEPWISE</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;SIGMOID SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;GAUSSIAN&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;GAUSSIAN SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;ELLIOT&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;ELLIOT SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;SIN SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;COS SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;SIN&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_n</span><span class="o">==</span><span class="s">&quot;COS&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;LINEAR&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function_layer</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">,</span><span class="n">af_layer_number</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;THRESHOLD&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;THRESHOLD SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">THRESHOLD_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;SIGMOID&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;SIGMOID STEPWISE&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_STEPWISE</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;SIGMOID SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIGMOID_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;GAUSSIAN&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;GAUSSIAN SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">GAUSSIAN_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;ELLIOT&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;ELLIOT SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ELLIOT_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;LINEAR PIECE SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">LINEAR_PIECE_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;SIN SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;COS SYMMETRIC&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS_SYMMETRIC</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;SIN&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">SIN</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">af_l</span><span class="o">==</span><span class="s">&quot;COS&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">COS</span><span class="p">,</span><span class="n">layer_no</span><span class="p">,</span><span class="n">neuron_no</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_steepness</span><span class="p">(</span><span class="n">svalue</span><span class="p">,</span><span class="n">layer</span><span class="p">,</span><span class="n">neuron</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_activation_steepness_layer</span><span class="p">(</span><span class="n">vsteep</span><span class="p">,</span><span class="n">vslayer</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tef</span><span class="o">==</span><span class="s">&quot;LINEAR&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_train_error_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ERRORFUNC_LINEAR</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">tef</span><span class="o">==</span><span class="s">&quot;TANH ERROR FUNCTION&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_train_error_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">ERRORFUNC_TANH</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tsf</span><span class="o">==</span><span class="s">&quot;MSE&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_train_stop_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">STOPFUNC_MSE</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">tsf</span><span class="o">==</span><span class="s">&quot;BIT FAIL&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_train_stop_function</span><span class="p">(</span><span class="n">libfann</span><span class="o">.</span><span class="n">FANN_STOPFUNC_BIT</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_bit_fail_limit</span><span class="p">(</span><span class="n">bfl</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c">#Find Out Whether it is Evolving topology or Fixed Topology</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">max_neurons</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Neurons&#39;</span><span class="p">]</span>
+            <span class="n">ncascade</span><span class="o">=</span><span class="bp">True</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">ncascade</span><span class="o">=</span><span class="bp">False</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ncascade</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">max_neurons</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Neurons&#39;</span><span class="p">])</span>
+            <span class="n">neurons_between_reports</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Neurons Between Reports&#39;</span><span class="p">])</span>
+            <span class="n">cdesired_error</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Desired Error&#39;</span><span class="p">])</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c">#For Advanced Cascade Parameters</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">ocf</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Change Fraction&#39;</span><span class="p">]</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">tcascade</span><span class="o">=</span><span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">tcascade</span><span class="o">=</span><span class="bp">False</span>
+
+        <span class="k">if</span> <span class="n">tcascade</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">ocf</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Change Fraction&#39;</span><span class="p">])</span>
+            <span class="n">ose</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Output Stagnation Epochs&#39;</span><span class="p">])</span>
+            <span class="n">ccf</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Candidate Change Fraction&#39;</span><span class="p">])</span>
+            <span class="n">cse</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Candidate Stagnation Epochs&#39;</span><span class="p">])</span>
+            <span class="n">wm</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Weight Multiplier&#39;</span><span class="p">])</span>
+            <span class="n">cl</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Candidate Limit&#39;</span><span class="p">])</span>
+            <span class="n">max_oe</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Out Epochs&#39;</span><span class="p">])</span>
+            <span class="n">min_oe</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Minimum Out Epochs&#39;</span><span class="p">])</span>
+            <span class="n">max_ce</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Maximum Candidate Epochs&#39;</span><span class="p">])</span>
+            <span class="n">min_ce</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s">&#39;Minimum Candidate Epochs&#39;</span><span class="p">])</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_output_change_fraction</span><span class="p">(</span><span class="n">ocf</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_output_stagnation_epochs</span><span class="p">(</span><span class="n">ose</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_candidate_change_fraction</span><span class="p">(</span><span class="n">ccf</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_candidate_stagnation_epochs</span><span class="p">(</span><span class="n">cse</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_weight_multiplier</span><span class="p">(</span><span class="n">wm</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_candidate_limit</span><span class="p">(</span><span class="n">cl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_max_out_epochs</span><span class="p">(</span><span class="n">max_oe</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_min_out_epochs</span><span class="p">(</span><span class="n">min_oe</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_max_cand_epochs</span><span class="p">(</span><span class="n">max_ce</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">set_cascade_min_cand_epochs</span><span class="p">(</span><span class="n">min_ce</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ncascade</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">cascadetrain_on_file</span><span class="p">(</span><span class="n">tfile</span><span class="p">,</span><span class="n">max_neurons</span><span class="p">,</span><span class="n">neurons_between_reports</span><span class="p">,</span><span class="n">cdesired_error</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">train_on_file</span><span class="p">(</span><span class="n">tfile</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">,</span> <span class="n">iterations_between_reports</span><span class="p">,</span> <span class="n">desired_error</span><span class="p">)</span>
+        <span class="n">fileparts</span><span class="o">=</span><span class="n">tfile</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">fileparts</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">fileparts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">temp</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_file</span><span class="o">=</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;.net&quot;</span>
+        <span class="n">network_fname</span><span class="o">=</span><span class="s">&quot;./dataset/&quot;</span><span class="o">+</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&quot;.net&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">print_parameters</span><span class="p">()</span>
+        <span class="k">print</span> <span class="s">&quot;Neuron Network Also saved at &quot;</span><span class="o">+</span> <span class="n">network_fname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ann</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move_network_file</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="bpn.move_network_file"><a class="viewcode-back" href="../index.html#train.bpn.move_network_file">[docs]</a>    <span class="k">def</span> <span class="nf">move_network_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move the Network file under the dataset folder.&quot;&quot;&quot;</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s">&quot;./dataset/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">network_file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">src</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_file</span>
+        <span class="n">dest</span><span class="o">=</span><span class="s">&quot;./dataset/&quot;</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">dest</span><span class="p">)</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">network</span><span class="o">=</span><span class="n">bpn</span><span class="p">()</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sibi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

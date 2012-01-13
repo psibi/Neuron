@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>neuron &mdash; Neuron v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Neuron v1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for neuron</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/python</span>
+<span class="sd">&quot;&quot;&quot;Main Neuron Module. Acts as controller of the Application&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">gtk</span>
+<span class="kn">import</span> <span class="nn">pygtk</span>
+<span class="kn">import</span> <span class="nn">dbm</span>
+<span class="kn">import</span> <span class="nn">shlex</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">from</span> <span class="nn">select_network</span> <span class="kn">import</span> <span class="n">selectbpn_window</span>
+<span class="kn">from</span> <span class="nn">adv_train</span> <span class="kn">import</span> <span class="n">adv_train</span>
+<span class="kn">from</span> <span class="nn">cnetwork</span> <span class="kn">import</span> <span class="n">cnetwork</span>
+<span class="kn">from</span> <span class="nn">qprop</span> <span class="kn">import</span> <span class="n">qprop</span>
+<span class="kn">from</span> <span class="nn">rprop</span> <span class="kn">import</span> <span class="n">rprop</span>
+<span class="kn">from</span> <span class="nn">cascade</span> <span class="kn">import</span> <span class="n">cascade</span>
+
+<div class="viewcode-block" id="Neuron_TextViewOutput"><a class="viewcode-back" href="../index.html#neuron.Neuron_TextViewOutput">[docs]</a><span class="k">class</span> <span class="nc">Neuron_TextViewOutput</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class used for logging the output of</span>
+<span class="sd">    the application to the Textview present in </span>
+<span class="sd">    the Neuron Window&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">textview</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">=</span><span class="n">textview</span>
+
+<div class="viewcode-block" id="Neuron_TextViewOutput.write"><a class="viewcode-back" href="../index.html#neuron.Neuron_TextViewOutput.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes output to the end of the Textview&quot;&quot;&quot;</span>
+        <span class="n">buf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">.</span><span class="n">get_buffer</span><span class="p">()</span>
+        <span class="n">textiter</span><span class="o">=</span><span class="n">buf</span><span class="o">.</span><span class="n">get_end_iter</span><span class="p">()</span>
+        <span class="n">buf</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">textiter</span><span class="p">,</span><span class="n">string</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">.</span><span class="n">set_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="neuron"><a class="viewcode-back" href="../index.html#neuron.neuron">[docs]</a><span class="k">class</span> <span class="nc">neuron</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Main Neuron Application&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gladefile</span><span class="o">=</span><span class="s">&quot;./gui/neuron.xml&quot;</span>
+        <span class="n">builder</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">add_from_file</span><span class="p">(</span><span class="n">gladefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;mainwindow&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;training_filechooser&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algo_inc</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;incremental_menuitem&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algo_batch</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;batch_menuitem&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algo_rprop</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;rprop_menuitem&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algo_qprop</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;qprop_menuitem&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutdialog</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;aboutdialog&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;neuron_textview&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talgo_window</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;talgo_window&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;incremental&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;batch&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rprop</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;rprop&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qprop</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;qprop&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_config</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;train_config&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evolving_train_config</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;evolving_train_config&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">=</span><span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loadfile</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">=</span><span class="bp">None</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">=</span><span class="n">Neuron_TextViewOutput</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="p">)</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutdialog</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;response&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">,</span><span class="n">r</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">hide</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cwindow</span><span class="o">=</span><span class="n">cnetwork</span><span class="p">()</span>
+ 
+<div class="viewcode-block" id="neuron.write_neuron"><a class="viewcode-back" href="../index.html#neuron.neuron.write_neuron">[docs]</a>    <span class="k">def</span> <span class="nf">write_neuron</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Appends output to the end of Textview&quot;&quot;&quot;</span>
+        <span class="n">buf</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">.</span><span class="n">get_buffer</span><span class="p">()</span>
+        <span class="n">textiter</span><span class="o">=</span><span class="n">buf</span><span class="o">.</span><span class="n">get_end_iter</span><span class="p">()</span>
+        <span class="n">buf</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">textiter</span><span class="p">,</span><span class="n">string</span><span class="o">+</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">.</span><span class="n">set_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+            </div>
+<div class="viewcode-block" id="neuron.on_mainwindow_destroy"><a class="viewcode-back" href="../index.html#neuron.neuron.on_mainwindow_destroy">[docs]</a>    <span class="k">def</span> <span class="nf">on_mainwindow_destroy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Quits Neuron on destroy event&quot;&quot;&quot;</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_Quit_activate"><a class="viewcode-back" href="../index.html#neuron.neuron.on_Quit_activate">[docs]</a>    <span class="k">def</span> <span class="nf">on_Quit_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Quits Neuron on selection Quit menuitem&quot;&quot;&quot;</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="neuron.on_algorithm_changed"><a class="viewcode-back" href="../index.html#neuron.neuron.on_algorithm_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_algorithm_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">radiomenuitem</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This function is called whenever the radiomenuitem </span>
+<span class="sd">        state is changed. This sets the algorithm of the </span>
+<span class="sd">        training network&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">algo_inc</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span><span class="o">=</span><span class="s">&quot;FANN_TRAIN_INCREMENTAL&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">=</span><span class="bp">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">algo_batch</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span><span class="o">=</span><span class="s">&quot;FANN_TRAIN_BATCH&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">=</span><span class="bp">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">algo_rprop</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span><span class="o">=</span><span class="s">&quot;FANN_TRAIN_RPROP&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rprop</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">==</span><span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">=</span><span class="n">rprop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">=</span><span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">=</span><span class="bp">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">algo_qprop</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span><span class="o">=</span><span class="s">&quot;FANN_TRAIN_QUICKPROP&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qprop</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">==</span><span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">=</span><span class="n">qprop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">=</span><span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">=</span><span class="bp">True</span>
+        <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+        <span class="n">db</span><span class="p">[</span><span class="s">&#39;Training Algorithm&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm_name</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_algorithm_selected"><a class="viewcode-back" href="../index.html#neuron.neuron.on_algorithm_selected">[docs]</a>    <span class="k">def</span> <span class="nf">on_algorithm_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">radiomenuitem</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler when a radiobutton get&#39;s toggled&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algo_inc</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">algo_batch</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+            </div>
+<div class="viewcode-block" id="neuron.on_talgo_window_delete_event"><a class="viewcode-back" href="../index.html#neuron.neuron.on_talgo_window_delete_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_talgo_window_delete_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete event handler for training algorithm window&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talgo_window</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="neuron.on_selectnetwork"><a class="viewcode-back" href="../index.html#neuron.neuron.on_selectnetwork">[docs]</a>    <span class="k">def</span> <span class="nf">on_selectnetwork</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A new window is created on selecting network&quot;&quot;&quot;</span>
+        <span class="n">sel_win</span><span class="o">=</span><span class="n">selectbpn_window</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_about_menuitem_activate"><a class="viewcode-back" href="../index.html#neuron.neuron.on_about_menuitem_activate">[docs]</a>    <span class="k">def</span> <span class="nf">on_about_menuitem_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Displays About dialog box when appropriate menuitem</span>
+<span class="sd">        is selected&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutdialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.get_training_data"><a class="viewcode-back" href="../index.html#neuron.neuron.get_training_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_training_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;File chooser dialog is shown for selecting training data&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_fc_cancel"><a class="viewcode-back" href="../index.html#neuron.neuron.on_fc_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">on_fc_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Cancel button handler for file chooser&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_fc_ok"><a class="viewcode-back" href="../index.html#neuron.neuron.on_fc_ok">[docs]</a>    <span class="k">def</span> <span class="nf">on_fc_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Ok button clicked() handler for file chooser dialog&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.train&quot;</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Training File&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.test&quot;</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Test File&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;.fa&quot;</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Argument Data&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        </div>
+<div class="viewcode-block" id="neuron.start_training"><a class="viewcode-back" href="../index.html#neuron.neuron.start_training">[docs]</a>    <span class="k">def</span> <span class="nf">start_training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Training Code for the Neuron Network&quot;&quot;&quot;</span>
+        <span class="n">cmd</span><span class="o">=</span><span class="s">&quot;./train.py -t&quot;</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_neuron</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            </div>
+<div class="viewcode-block" id="neuron.on_clean"><a class="viewcode-back" href="../index.html#neuron.neuron.on_clean">[docs]</a>    <span class="k">def</span> <span class="nf">on_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For cleaning the Neuron dataset&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;config.dat.db&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;config.dat.db&#39;</span><span class="p">)</span>
+            <span class="n">dlg</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_INFO</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span><span class="s">&quot;Neuron Dataset Cleaned&quot;</span><span class="p">)</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dlg</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_ERROR</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span><span class="s">&quot;Neuron Dataset already Clean&quot;</span><span class="p">)</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_print"><a class="viewcode-back" href="../index.html#neuron.neuron.on_print">[docs]</a>    <span class="k">def</span> <span class="nf">on_print</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For printing parameters of the Neuron dataset&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s">&#39;config.dat.db&#39;</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">line</span><span class="o">=</span><span class="n">key</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span><span class="o">+</span><span class="n">db</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_neuron</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dlg</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_ERROR</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span><span class="s">&quot;Neuron Dataset is empty.&quot;</span><span class="p">)</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">dlg</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_load"><a class="viewcode-back" href="../index.html#neuron.neuron.on_load">[docs]</a>    <span class="k">def</span> <span class="nf">on_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Displays file chooser dialog for selecting different </span>
+<span class="sd">        files for the simulator&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_algorithm_clicked"><a class="viewcode-back" href="../index.html#neuron.neuron.on_algorithm_clicked">[docs]</a>    <span class="k">def</span> <span class="nf">on_algorithm_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler on Clicking algorithm tool item&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talgo_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="o">.</span><span class="n">toggled</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_talgo_ok_button_clicked"><a class="viewcode-back" href="../index.html#neuron.neuron.on_talgo_ok_button_clicked">[docs]</a>    <span class="k">def</span> <span class="nf">on_talgo_ok_button_clicked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for ok button in talgo window&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talgo_window</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rprop</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">==</span><span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">=</span><span class="n">rprop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">=</span><span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">algo_rprop</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">qprop</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">==</span><span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">qpropw</span><span class="o">=</span><span class="n">qprop</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rpropw</span><span class="o">=</span><span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">algo_qprop</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        </div>
+<div class="viewcode-block" id="neuron.on_cleantext_click"><a class="viewcode-back" href="../index.html#neuron.neuron.on_cleantext_click">[docs]</a>    <span class="k">def</span> <span class="nf">on_cleantext_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For cleaning the TextView in Neuron&quot;&quot;&quot;</span>
+        <span class="n">buf</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">TextBuffer</span><span class="p">()</span>
+        <span class="n">buf</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntextview</span><span class="o">.</span><span class="n">set_buffer</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="neuron.get_argument_data"><a class="viewcode-back" href="../index.html#neuron.neuron.get_argument_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_argument_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For displaying the file chooser dialog to get</span>
+<span class="sd">        Argument data&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+         </div>
+<div class="viewcode-block" id="neuron.approximate"><a class="viewcode-back" href="../index.html#neuron.neuron.approximate">[docs]</a>    <span class="k">def</span> <span class="nf">approximate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For Function Approximation in Neuron&quot;&quot;&quot;</span>
+        <span class="n">cmd</span><span class="o">=</span><span class="s">&quot;./fapprox.py&quot;</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_neuron</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="neuron.get_test_data"><a class="viewcode-back" href="../index.html#neuron.neuron.get_test_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_test_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For displaying the file chooser dialog to get</span>
+<span class="sd">        Test data&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_test"><a class="viewcode-back" href="../index.html#neuron.neuron.on_test">[docs]</a>    <span class="k">def</span> <span class="nf">on_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For testing of the BPN network in Neuron&quot;&quot;&quot;</span>
+        <span class="n">cmd</span><span class="o">=</span><span class="s">&quot;./test.py&quot;</span>
+        <span class="n">args</span><span class="o">=</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">process</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="n">bufsize</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span><span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">=</span><span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">write_neuron</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="neuron.on_train_config_activate"><a class="viewcode-back" href="../index.html#neuron.neuron.on_train_config_activate">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_config_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler to show window related to Advanced training</span>
+<span class="sd">        of the simulator&quot;&quot;&quot;</span>
+        <span class="n">atrain</span><span class="o">=</span><span class="n">adv_train</span><span class="p">()</span>
+        <span class="n">atrain</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_configure_menuitem_activate"><a class="viewcode-back" href="../index.html#neuron.neuron.on_configure_menuitem_activate">[docs]</a>    <span class="k">def</span> <span class="nf">on_configure_menuitem_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For displaying the configure window&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cwindow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="neuron.on_aboutdialog_delete_event"><a class="viewcode-back" href="../index.html#neuron.neuron.on_aboutdialog_delete_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_aboutdialog_delete_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the delete event on About dialog&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutdialog</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    </div>
+<div class="viewcode-block" id="neuron.on_training_filechooser_delete_event"><a class="viewcode-back" href="../index.html#neuron.neuron.on_training_filechooser_delete_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_training_filechooser_delete_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">widget</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the delete event of filechooser dialog&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fcdialog</span><span class="o">.</span><span class="n">hide</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="neuron.on_evolving_train_config_activate"><a class="viewcode-back" href="../index.html#neuron.neuron.on_evolving_train_config_activate">[docs]</a>    <span class="k">def</span> <span class="nf">on_evolving_train_config_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">radiobutton</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For showing window for configuring parameters related to cascade</span>
+<span class="sd">        Training&quot;&quot;&quot;</span>
+        <span class="n">wcascade</span><span class="o">=</span><span class="n">cascade</span><span class="p">()</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">neuron_window</span><span class="o">=</span><span class="n">neuron</span><span class="p">()</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sibi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

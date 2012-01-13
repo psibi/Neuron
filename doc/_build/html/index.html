@@ -1,0 +1,642 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to Neuron’s documentation! &mdash; Neuron v1.0 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Neuron v1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">Neuron v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-neuron-s-documentation">
+<h1>Welcome to Neuron&#8217;s documentation!<a class="headerlink" href="#welcome-to-neuron-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-neuron"></span><p>Main Neuron Module. Acts as controller of the Simulator.</p>
+<dl class="class">
+<dt id="neuron.neuron">
+<em class="property">class </em><tt class="descclassname">neuron.</tt><tt class="descname">neuron</tt><a class="reference internal" href="_modules/neuron.html#neuron"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main Neuron Simulator</p>
+<dl class="method">
+<dt id="neuron.neuron.approximate">
+<tt class="descname">approximate</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.approximate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.approximate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For Function Approximation in Neuron.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.get_argument_data">
+<tt class="descname">get_argument_data</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.get_argument_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.get_argument_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>For displaying the file chooser dialog to get
+Argument data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.get_test_data">
+<tt class="descname">get_test_data</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.get_test_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.get_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>For displaying the file chooser dialog to get
+Test data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.get_training_data">
+<tt class="descname">get_training_data</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.get_training_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.get_training_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>File chooser dialog is shown for selecting training data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_Quit_activate">
+<tt class="descname">on_Quit_activate</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_Quit_activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_Quit_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quits Neuron on selection Quit menuitem.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_about_menuitem_activate">
+<tt class="descname">on_about_menuitem_activate</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_about_menuitem_activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_about_menuitem_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays About dialog box when appropriate menuitem
+is selected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_aboutdialog_delete_event">
+<tt class="descname">on_aboutdialog_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_aboutdialog_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_aboutdialog_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the delete event on About dialog.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_algorithm_changed">
+<tt class="descname">on_algorithm_changed</tt><big>(</big><em>radiomenuitem</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_algorithm_changed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_algorithm_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function is called whenever the radiomenuitem 
+state is changed. This sets the algorithm of the 
+training network.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_algorithm_clicked">
+<tt class="descname">on_algorithm_clicked</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_algorithm_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_algorithm_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler on Clicking algorithm tool item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_algorithm_selected">
+<tt class="descname">on_algorithm_selected</tt><big>(</big><em>radiomenuitem</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_algorithm_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_algorithm_selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler when a radiobutton get&#8217;s toggled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_clean">
+<tt class="descname">on_clean</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>For cleaning the Neuron dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_cleantext_click">
+<tt class="descname">on_cleantext_click</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_cleantext_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_cleantext_click" title="Permalink to this definition">¶</a></dt>
+<dd><p>For cleaning the TextView in Neuron.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_configure_menuitem_activate">
+<tt class="descname">on_configure_menuitem_activate</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_configure_menuitem_activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_configure_menuitem_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For displaying the configure window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_evolving_train_config_activate">
+<tt class="descname">on_evolving_train_config_activate</tt><big>(</big><em>radiobutton</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_evolving_train_config_activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_evolving_train_config_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For showing window for configuring parameters related to cascade
+Training.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_fc_cancel">
+<tt class="descname">on_fc_cancel</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_fc_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_fc_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancel button handler for file chooser.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_fc_ok">
+<tt class="descname">on_fc_ok</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_fc_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_fc_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ok button clicked() handler for file chooser dialog.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_load">
+<tt class="descname">on_load</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays file chooser dialog for selecting different 
+files for the simulator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_mainwindow_destroy">
+<tt class="descname">on_mainwindow_destroy</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_mainwindow_destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_mainwindow_destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quits Neuron on destroy event.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_print">
+<tt class="descname">on_print</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>For printing parameters of the Neuron dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_selectnetwork">
+<tt class="descname">on_selectnetwork</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_selectnetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_selectnetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>A new window is created on selecting network.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_talgo_ok_button_clicked">
+<tt class="descname">on_talgo_ok_button_clicked</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_talgo_ok_button_clicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_talgo_ok_button_clicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for ok button in talgo window</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_talgo_window_delete_event">
+<tt class="descname">on_talgo_window_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_talgo_window_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_talgo_window_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete event handler for training algorithm window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_test">
+<tt class="descname">on_test</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>For testing of the BPN network in Neuron.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_train_config_activate">
+<tt class="descname">on_train_config_activate</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_train_config_activate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_train_config_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler to show window related to Advanced training
+of the simulator.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.on_training_filechooser_delete_event">
+<tt class="descname">on_training_filechooser_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.on_training_filechooser_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.on_training_filechooser_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the delete event of filechooser dialog.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.start_training">
+<tt class="descname">start_training</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.start_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.start_training" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training Code for the Neuron Network.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="neuron.neuron.write_neuron">
+<tt class="descname">write_neuron</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/neuron.html#neuron.write_neuron"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.neuron.write_neuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends output to the end of Textview.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="neuron.Neuron_TextViewOutput">
+<em class="property">class </em><tt class="descclassname">neuron.</tt><tt class="descname">Neuron_TextViewOutput</tt><big>(</big><em>textview</em><big>)</big><a class="reference internal" href="_modules/neuron.html#Neuron_TextViewOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.Neuron_TextViewOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class used for logging the output of
+the application to the Textview present in 
+the Neuron Window.</p>
+<dl class="method">
+<dt id="neuron.Neuron_TextViewOutput.write">
+<tt class="descname">write</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/neuron.html#Neuron_TextViewOutput.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neuron.Neuron_TextViewOutput.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes output to the end of the Textview.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-adv_train"></span><dl class="class">
+<dt id="adv_train.adv_train">
+<em class="property">class </em><tt class="descclassname">adv_train.</tt><tt class="descname">adv_train</tt><a class="reference internal" href="_modules/adv_train.html#adv_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure Window for Setting Advanced Parameters on Training</p>
+<dl class="method">
+<dt id="adv_train.adv_train.on_add_afl">
+<tt class="descname">on_add_afl</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_add_afl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_add_afl" title="Permalink to this definition">¶</a></dt>
+<dd><p>For dynamically adding Entry box and Combobox related to Activation
+Function of a layer on clicking the + button.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.on_add_afn">
+<tt class="descname">on_add_afn</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_add_afn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_add_afn" title="Permalink to this definition">¶</a></dt>
+<dd><p>For dynamically adding Entry Box and Comboxbox
+related to Activation Function of a neuron on clicking the + button.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.on_add_asl">
+<tt class="descname">on_add_asl</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_add_asl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_add_asl" title="Permalink to this definition">¶</a></dt>
+<dd><p>For dynamically adding Entry box for Activation Steepness for
+a layer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.on_add_asn">
+<tt class="descname">on_add_asn</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_add_asn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_add_asn" title="Permalink to this definition">¶</a></dt>
+<dd><p>For dynamically adding Entry box for Activation Steepness for
+a neuron.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.on_cancel">
+<tt class="descname">on_cancel</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the Cancel button in the Advanced Training Window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button in the Advanced Training Window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.show">
+<tt class="descname">show</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>For displaying the Advanced Training Window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="adv_train.adv_train.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/adv_train.html#adv_train.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adv_train.adv_train.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For Validating the GTK Enty widgets present in the window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-cascade"></span><dl class="class">
+<dt id="cascade.cascade">
+<em class="property">class </em><tt class="descclassname">cascade.</tt><tt class="descname">cascade</tt><a class="reference internal" href="_modules/cascade.html#cascade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cascade.cascade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window For Cascade Training in the Neuron Simulator</p>
+<dl class="method">
+<dt id="cascade.cascade.on_cascade_window_delete_event">
+<tt class="descname">on_cascade_window_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/cascade.html#cascade.on_cascade_window_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cascade.cascade.on_cascade_window_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the delete event in the Cascade Window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cascade.cascade.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/cascade.html#cascade.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cascade.cascade.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button present in the Cascade Window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cascade.cascade.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/cascade.html#cascade.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cascade.cascade.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>To validate the Entry present in the Cascade Window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-cnetwork"></span><dl class="class">
+<dt id="cnetwork.cnetwork">
+<em class="property">class </em><tt class="descclassname">cnetwork.</tt><tt class="descname">cnetwork</tt><a class="reference internal" href="_modules/cnetwork.html#cnetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cnetwork.cnetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window for configuring Network Type</p>
+<dl class="method">
+<dt id="cnetwork.cnetwork.on_cancel">
+<tt class="descname">on_cancel</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/cnetwork.html#cnetwork.on_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cnetwork.cnetwork.on_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the Cancel button present in the cnetwork.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cnetwork.cnetwork.on_network_conf_delete_event">
+<tt class="descname">on_network_conf_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/cnetwork.html#cnetwork.on_network_conf_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cnetwork.cnetwork.on_network_conf_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete event handler for the cnetwork window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cnetwork.cnetwork.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/cnetwork.html#cnetwork.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cnetwork.cnetwork.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button present in the cnetwork window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cnetwork.cnetwork.show">
+<tt class="descname">show</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/cnetwork.html#cnetwork.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cnetwork.cnetwork.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>For showing the Configure Network Type(cnetwork) window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qprop"></span><dl class="class">
+<dt id="qprop.qprop">
+<em class="property">class </em><tt class="descclassname">qprop.</tt><tt class="descname">qprop</tt><a class="reference internal" href="_modules/qprop.html#qprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qprop.qprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window for QPROP Algorithm parameters.</p>
+<dl class="method">
+<dt id="qprop.qprop.on_cancel">
+<tt class="descname">on_cancel</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/qprop.html#qprop.on_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qprop.qprop.on_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the Cancel button present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qprop.qprop.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/qprop.html#qprop.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qprop.qprop.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button present.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qprop.qprop.on_qprop_window_delete_event">
+<tt class="descname">on_qprop_window_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/qprop.html#qprop.on_qprop_window_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qprop.qprop.on_qprop_window_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the delete event present in the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qprop.qprop.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/qprop.html#qprop.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qprop.qprop.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For validating the Entry present in the window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-rprop"></span><dl class="class">
+<dt id="rprop.rprop">
+<em class="property">class </em><tt class="descclassname">rprop.</tt><tt class="descname">rprop</tt><a class="reference internal" href="_modules/rprop.html#rprop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rprop.rprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window for displaying parameters related to RPROP algorithm.</p>
+<dl class="method">
+<dt id="rprop.rprop.on_cancel">
+<tt class="descname">on_cancel</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/rprop.html#rprop.on_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rprop.rprop.on_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the cancel button which is invoked when it is clicked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rprop.rprop.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/rprop.html#rprop.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rprop.rprop.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button which is invoked when it is clicked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rprop.rprop.on_rprop_window_delete_event">
+<tt class="descname">on_rprop_window_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/rprop.html#rprop.on_rprop_window_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rprop.rprop.on_rprop_window_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete event handler in the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rprop.rprop.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/rprop.html#rprop.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#rprop.rprop.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For validating the Entry present in the window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-train_window"></span><dl class="class">
+<dt id="train_window.train_window">
+<em class="property">class </em><tt class="descclassname">train_window.</tt><tt class="descname">train_window</tt><a class="reference internal" href="_modules/train_window.html#train_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_window.train_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window For Asking Training Parameters about BPN Network</p>
+<dl class="method">
+<dt id="train_window.train_window.Validate_form">
+<tt class="descname">Validate_form</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/train_window.html#train_window.Validate_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_window.train_window.Validate_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the form so that no Entry box is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="train_window.train_window.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/train_window.html#train_window.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_window.train_window.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="train_window.train_window.on_train_window_destroy">
+<tt class="descname">on_train_window_destroy</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/train_window.html#train_window.on_train_window_destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_window.train_window.on_train_window_destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy Event handler for the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="train_window.train_window.pack_param">
+<tt class="descname">pack_param</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/train_window.html#train_window.pack_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train_window.train_window.pack_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Packs parameter into a list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-train"></span><dl class="class">
+<dt id="train.bpn">
+<em class="property">class </em><tt class="descclassname">train.</tt><tt class="descname">bpn</tt><a class="reference internal" href="_modules/train.html#bpn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train.bpn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for training the BPN Network.</p>
+<dl class="method">
+<dt id="train.bpn.move_network_file">
+<tt class="descname">move_network_file</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/train.html#bpn.move_network_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train.bpn.move_network_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move the Network file under the dataset folder.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="train.bpn.train">
+<tt class="descname">train</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/train.html#bpn.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#train.bpn.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the BPN network.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-test"></span><dl class="class">
+<dt id="test.bpn_test">
+<em class="property">class </em><tt class="descclassname">test.</tt><tt class="descname">bpn_test</tt><a class="reference internal" href="_modules/test.html#bpn_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#test.bpn_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for testing BPN network and returning MSE on the network.</p>
+<dl class="method">
+<dt id="test.bpn_test.test">
+<tt class="descname">test</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/test.html#bpn_test.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#test.bpn_test.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test&#8217;s the BPN Network.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-fapprox"></span><dl class="class">
+<dt id="fapprox.function_aprox">
+<em class="property">class </em><tt class="descclassname">fapprox.</tt><tt class="descname">function_aprox</tt><a class="reference internal" href="_modules/fapprox.html#function_aprox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fapprox.function_aprox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for Function Approximation against the input data.</p>
+<dl class="method">
+<dt id="fapprox.function_aprox.test">
+<tt class="descname">test</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/fapprox.html#function_aprox.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fapprox.function_aprox.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>For testing the Network and approximating the value of a function.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-ask_param"></span><dl class="class">
+<dt id="ask_param.askparam_window">
+<em class="property">class </em><tt class="descclassname">ask_param.</tt><tt class="descname">askparam_window</tt><big>(</big><em>net</em><big>)</big><a class="reference internal" href="_modules/ask_param.html#askparam_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ask_param.askparam_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window For Asking Parameters about BPN Network</p>
+<dl class="method">
+<dt id="ask_param.askparam_window.on_config_standard_destroy">
+<tt class="descname">on_config_standard_destroy</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/ask_param.html#askparam_window.on_config_standard_destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ask_param.askparam_window.on_config_standard_destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the destroy event for the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ask_param.askparam_window.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/ask_param.html#askparam_window.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ask_param.askparam_window.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the OK button for the window which is raised
+whenever it is clicked</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ask_param.askparam_window.validate_parameters">
+<tt class="descname">validate_parameters</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/ask_param.html#askparam_window.validate_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ask_param.askparam_window.validate_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>For Validating the Entry present in the Ask Parameter Window</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-network_evol"></span><dl class="class">
+<dt id="network_evol.Network_evol">
+<em class="property">class </em><tt class="descclassname">network_evol.</tt><tt class="descname">Network_evol</tt><a class="reference internal" href="_modules/network_evol.html#Network_evol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window for Evolving topology Network.</p>
+<dl class="method">
+<dt id="network_evol.Network_evol.on_cancel">
+<tt class="descname">on_cancel</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/network_evol.html#Network_evol.on_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol.on_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the Cancel button on the window when it is clicked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="network_evol.Network_evol.on_evol_window_delete_event">
+<tt class="descname">on_evol_window_delete_event</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/network_evol.html#Network_evol.on_evol_window_delete_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol.on_evol_window_delete_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for the delete event in the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="network_evol.Network_evol.on_ok">
+<tt class="descname">on_ok</tt><big>(</big><em>button</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/network_evol.html#Network_evol.on_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol.on_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for OK button on the window when it is clicked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="network_evol.Network_evol.show">
+<tt class="descname">show</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/network_evol.html#Network_evol.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>For displaying the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="network_evol.Network_evol.validate">
+<tt class="descname">validate</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/network_evol.html#Network_evol.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#network_evol.Network_evol.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>For validating the Entry present in the window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-select_network"></span><dl class="class">
+<dt id="select_network.selectbpn_window">
+<em class="property">class </em><tt class="descclassname">select_network.</tt><tt class="descname">selectbpn_window</tt><a class="reference internal" href="_modules/select_network.html#selectbpn_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#select_network.selectbpn_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window For Selecting BPN Network</p>
+<dl class="method">
+<dt id="select_network.selectbpn_window.get_network">
+<tt class="descname">get_network</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/select_network.html#selectbpn_window.get_network"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#select_network.selectbpn_window.get_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the BPN network selected.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="select_network.selectbpn_window.on_create_window_destroy">
+<tt class="descname">on_create_window_destroy</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/select_network.html#selectbpn_window.on_create_window_destroy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#select_network.selectbpn_window.on_create_window_destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy Event handler in the window.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="select_network.selectbpn_window.on_network_selection">
+<tt class="descname">on_network_selection</tt><big>(</big><em>radiomenuitem</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/select_network.html#selectbpn_window.on_network_selection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#select_network.selectbpn_window.on_network_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method invoked whenever the radiobutton emits a toggled signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="select_network.selectbpn_window.on_next">
+<tt class="descname">on_next</tt><big>(</big><em>widget</em>, <em>data=None</em><big>)</big><a class="reference internal" href="_modules/select_network.html#selectbpn_window.on_next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#select_network.selectbpn_window.on_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler invoked on clicking the Next button.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Neuron&#8217;s documentation!</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">Neuron v1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sibi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>adv_train &mdash; Neuron v1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Neuron v1.0 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for adv_train</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">gtk</span>
+<span class="kn">import</span> <span class="nn">pygtk</span>
+<span class="kn">import</span> <span class="nn">dbm</span>
+
+<div class="viewcode-block" id="adv_train"><a class="viewcode-back" href="../index.html#adv_train.adv_train">[docs]</a><span class="k">class</span> <span class="nc">adv_train</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Configure Window for Setting Advanced Parameters on Training&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">gladefile</span><span class="o">=</span><span class="s">&quot;./gui/adv_training.xml&quot;</span>
+        <span class="n">builder</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">add_from_file</span><span class="p">(</span><span class="n">gladefile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;adv_train_window&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox4</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox4&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox5</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox5&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox6</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox6&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox7</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox7&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox8</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox8&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox10</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;vbox10&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">af_liststore</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;af_liststore&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">afn_combobox</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;afn_combobox&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">afl_combobox</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;afl_combobox&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmomentum</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;lmomentum&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">af_neuron</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;af_neuron&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">af_layer</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;af_layer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_neuron</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;as_neuron&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_layer</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;as_layer&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tef_combobox</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;tef_combobox&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tsf_combobox</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;tsf_combobox&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bflimit</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s">&quot;bflimit&quot;</span><span class="p">)</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="adv_train.show"><a class="viewcode-back" href="../index.html#adv_train.adv_train.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For displaying the Advanced Training Window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="adv_train.validate"><a class="viewcode-back" href="../index.html#adv_train.adv_train.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For Validating the GTK Enty widgets present in the window.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lmomentum</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">af_neuron</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">af_layer</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_neuron</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_layer</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">bflimit</span><span class="o">.</span><span class="n">get_text_length</span><span class="p">()</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="adv_train.on_add_afn"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_add_afn">[docs]</a>    <span class="k">def</span> <span class="nf">on_add_afn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For dynamically adding Entry Box and Comboxbox</span>
+<span class="sd">        related to Activation Function of a neuron on clicking the + button.&quot;&quot;&quot;</span>
+        <span class="n">entry</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Entry</span><span class="p">()</span>
+        <span class="n">cb</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">ComboBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">af_liststore</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">CellRendererText</span><span class="p">()</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">add_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span><span class="s">&#39;text&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox5</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">cb</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox4</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="adv_train.on_add_afl"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_add_afl">[docs]</a>    <span class="k">def</span> <span class="nf">on_add_afl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For dynamically adding Entry box and Combobox related to Activation</span>
+<span class="sd">        Function of a layer on clicking the + button.&quot;&quot;&quot;</span>
+        <span class="n">entry</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Entry</span><span class="p">()</span>
+        <span class="n">cb</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">ComboBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">af_liststore</span><span class="p">)</span>
+        <span class="n">cell</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">CellRendererText</span><span class="p">()</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">add_attribute</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span><span class="s">&#39;text&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox7</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">cb</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox6</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cb</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>        
+</div>
+<div class="viewcode-block" id="adv_train.on_add_asn"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_add_asn">[docs]</a>    <span class="k">def</span> <span class="nf">on_add_asn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For dynamically adding Entry box for Activation Steepness for</span>
+<span class="sd">        a neuron.&quot;&quot;&quot;</span>
+        <span class="n">entry</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Entry</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox8</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="adv_train.on_add_asl"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_add_asl">[docs]</a>    <span class="k">def</span> <span class="nf">on_add_asl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;For dynamically adding Entry box for Activation Steepness for</span>
+<span class="sd">        a layer.&quot;&quot;&quot;</span>
+        <span class="n">entry</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">Entry</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vbox10</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="bp">True</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="adv_train.on_ok"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_ok">[docs]</a>    <span class="k">def</span> <span class="nf">on_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the OK button in the Advanced Training Window.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+            <span class="n">db</span><span class="o">=</span><span class="n">dbm</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;config.dat&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Learning Momentum&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lmomentum</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;AF for Neuron&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">af_neuron</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;AF Neuron&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">afn_combobox</span><span class="o">.</span><span class="n">get_active_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;AF for layer&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">af_layer</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;AF Layer&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">afl_combobox</span><span class="o">.</span><span class="n">get_active_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Activation Steepness for Neuron&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">as_neuron</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Activation Steepness for layer&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">as_layer</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Train Error Function&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tef_combobox</span><span class="o">.</span><span class="n">get_active_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Train Stop Function&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tsf_combobox</span><span class="o">.</span><span class="n">get_active_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="p">[</span><span class="s">&#39;Bit Fail Limit&#39;</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bflimit</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">em</span><span class="o">=</span><span class="n">gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">DIALOG_MODAL</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">MESSAGE_ERROR</span><span class="p">,</span><span class="n">gtk</span><span class="o">.</span><span class="n">BUTTONS_OK</span><span class="p">,</span><span class="s">&quot;Parameters Not Completed&quot;</span><span class="p">)</span>
+            <span class="n">em</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="n">em</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="adv_train.on_cancel"><a class="viewcode-back" href="../index.html#adv_train.adv_train.on_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">on_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">button</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for the Cancel button in the Advanced Training Window.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+    </div></div>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">window</span><span class="o">=</span><span class="n">adv_train</span><span class="p">()</span>
+    <span class="n">window</span><span class="o">.</span><span class="n">win</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Neuron v1.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Sibi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
