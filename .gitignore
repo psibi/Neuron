@@ -30,4 +30,4 @@ pip-log.txt
 *.net
 
 #Neuron Dataset
-*.db
+config.dat.db
