@@ -15,7 +15,7 @@
     <property name="version">1.0</property>
     <property name="copyright" translatable="yes">Copyright &#xA9; 2011-2012 Sibi
 Copyright &#xA9; 2011-2012 Siddarth
-Copyright &#xA9; 2001-2010 Allwyn Jones</property>
+Copyright &#xA9; 2011-2010 Allwyn Jones</property>
     <property name="comments" translatable="yes">A Neural Network Simulator</property>
     <property name="website">http://github.com/psibi/Neuron</property>
     <property name="license" translatable="yes">Neuron is free software; you can redistribute it and/or 
@@ -424,6 +424,35 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-copy</property>
                 <signal handler="on_algorithm_clicked" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="save">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">Save</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-save</property>
+                <signal handler="on_save" name="clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="print1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="use_action_appearance">False</property>
+                <property name="label" translatable="yes">print</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-print</property>
               </object>
               <packing>
                 <property name="expand">False</property>
