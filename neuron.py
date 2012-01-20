@@ -9,6 +9,7 @@ import dbm
 import shlex
 import shutil
 import subprocess
+import gtkunixprint
 from select_network import selectbpn_window
 from adv_train import adv_train
 from cnetwork import cnetwork
@@ -269,6 +270,38 @@ class neuron:
         """For showing window for configuring parameters related to cascade
         Training."""
         wcascade=cascade()
+
+    def on_save(self,widget,data=None):
+        """Handler on pressing the save button on tool button"""
+        dialog=gtk.FileChooserDialog("Save As",None,gtk.FILE_CHOOSER_ACTION_SAVE,(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,gtk.RESPONSE_OK),None)
+        response=dialog.run()
+        if response==gtk.RESPONSE_OK:
+            filename=dialog.get_filename()
+            save_file=open(filename,'w')
+            textbuffer=self.ntextview.get_buffer()
+            startiter, enditer = textbuffer.get_bounds()
+            text=textbuffer.get_text(startiter,enditer,False)
+            save_file.write(text)
+            save_file.close()
+        dialog.destroy()
+
+    def print_cb(self,printjob, data, errormsg):
+        if errormsg:
+            print('Error occurred while printing:\n%s' % errormsg)
+
+    def on_print(self,widget,data=None):
+        """Handler for printing"""
+        filename='/home/sibi/Documents/samp.txt'
+        pud=gtkunixprint.PrintUnixDialog()
+        response=pud.run()
+        if response==gtk.RESPONSE_OK:
+            printer = pud.get_selected_printer()
+            settings = pud.get_settings()
+            setup = pud.get_page_setup()
+            printjob = gtkunixprint.PrintJob('Printing %s' % filename, printer, settings, setup)
+            printjob.set_source_file(filename)
+            printjob.send(self.print_cb)
+        pud.destroy()
 
 if __name__=="__main__":
     neuron_window=neuron()
