@@ -15,6 +15,7 @@ try:
     num_neurons_hidden=int(db['Hidden Neurons'])
     num_hlay=int(db['Number of Hidden Layers'])
     tfile=db['Training File']
+    test_file=db['Test File']
 except KeyError as key:
     dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK, str(key)+ " Uninitialized")
     dlg.run()
