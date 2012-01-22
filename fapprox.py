@@ -31,16 +31,24 @@ class function_aprox:
 
     def test(self):
         """For testing the Network and approximating the value of a function."""
+        try:
+            db=dbm.open('config.dat','c')
+            connection_rate=float(db['Connection Rate'])
+            learning_rate=float(db['Learning Rate'])
+            desired_error=float(db['Desired Error'])
+            max_iterations=int(db['Maximum Iterations'])
+            iterations_between_reports=int(db['Iteration Between Reports'])
+            ol_act_fun=db['Output Layer Activation Function']
+            self.network_file=db['Argument Data']
+        except KeyError as key:
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK, str(key)+ " Uninitialized")
+            dlg.run()
+            dlg.destroy()
+            db.close()
+            sys.exit(1)
+        finally:
+            db.close()
         print "BPN Network Training Details:\n"
-        db=dbm.open('config.dat','c')
-        connection_rate=float(db['Connection Rate'])
-        learning_rate=float(db['Learning Rate'])
-        desired_error=float(db['Desired Error'])
-        max_iterations=int(db['Maximum Iterations'])
-        iterations_between_reports=int(db['Iteration Between Reports'])
-        ol_act_fun=db['Output Layer Activation Function']
-        self.network_file=db['Argument Data']
-        db.close()
         if bpn_type=="SPR":
             self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
         elif bpn_type=="STD":
