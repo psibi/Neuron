@@ -283,6 +283,11 @@ class neuron:
                 textbuffer=self.ntextview.get_buffer()
                 startiter, enditer = textbuffer.get_bounds()
                 text=textbuffer.get_text(startiter,enditer,False)
+                if text=="":
+                    dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Nothing to Print")
+                    dlg.run()
+                    dlg.destroy()
+                    return
                 save_file.write(text)
                 save_file.close()
                 cmd="./lib/pyText2pdf.py " + fileparts[0]
