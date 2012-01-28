@@ -277,30 +277,58 @@ class neuron:
         response=dialog.run()
         if response==gtk.RESPONSE_OK:
             filename=dialog.get_filename()
-            save_file=open(filename,'w')
-            textbuffer=self.ntextview.get_buffer()
-            startiter, enditer = textbuffer.get_bounds()
-            text=textbuffer.get_text(startiter,enditer,False)
-            save_file.write(text)
-            save_file.close()
+            if filename.endswith(".pdf"):
+                fileparts=filename.split(".")
+                save_file=open(fileparts[0],'w')
+                textbuffer=self.ntextview.get_buffer()
+                startiter, enditer = textbuffer.get_bounds()
+                text=textbuffer.get_text(startiter,enditer,False)
+                save_file.write(text)
+                save_file.close()
+                cmd="./lib/pyText2pdf.py " + fileparts[0]
+                args=shlex.split(cmd)
+                process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
+            else:
+                save_file=open(filename,'w')
+                textbuffer=self.ntextview.get_buffer()
+                startiter, enditer = textbuffer.get_bounds()
+                text=textbuffer.get_text(startiter,enditer,False)
+                save_file.write(text)
+                save_file.close()
         dialog.destroy()
 
     def print_cb(self,printjob, data, errormsg):
         if errormsg:
             print('Error occurred while printing:\n%s' % errormsg)
 
-    def on_print(self,widget,data=None):
-        """Handler for printing"""
-        filename='/home/sibi/Documents/samp.txt'
+    def on_printing(self,widget,data=None):
+        """Handler for printing files. Currently only supports UNIX platform"""
+        save_file=open('temp','w')
+        textbuffer=self.ntextview.get_buffer()
+        startiter, enditer = textbuffer.get_bounds()
+        text=textbuffer.get_text(startiter,enditer,False)
+        if text=="":
+            dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Nothing to Print")
+            dlg.run()
+            dlg.destroy()
+            return
+        save_file.write(text)
+        save_file.close()
+        cmd="./lib/pyText2pdf.py " + 'temp'
+        args=shlex.split(cmd)
+        process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
         pud=gtkunixprint.PrintUnixDialog()
         response=pud.run()
         if response==gtk.RESPONSE_OK:
+            filename='temp.pdf'
             printer = pud.get_selected_printer()
             settings = pud.get_settings()
             setup = pud.get_page_setup()
             printjob = gtkunixprint.PrintJob('Printing %s' % filename, printer, settings, setup)
             printjob.set_source_file(filename)
             printjob.send(self.print_cb)
+            if os.path.isfile('temp.pdf'):
+                os.remove('temp.pdf')
         pud.destroy()
 
 if __name__=="__main__":
