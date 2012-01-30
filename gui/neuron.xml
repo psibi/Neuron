@@ -453,7 +453,7 @@ Boston, MA 02110-1301, USA.</property>
                 <property name="label" translatable="yes">print</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-print</property>
-                <signal handler="on_print" name="clicked" swapped="no"/>
+                <signal handler="on_printing" name="clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
