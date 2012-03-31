@@ -20,6 +20,7 @@ class cascade:
         self.min_oe_entry=builder.get_object("min_oe_entry")
         self.max_ce_entry=builder.get_object("max_ce_entry")
         self.min_ce_entry=builder.get_object("min_ce_entry")
+        self.num_cgroup_entry=builder.get_object("num_cgroup_entry")
         builder.connect_signals(self)
 
     def validate(self):
@@ -44,6 +45,8 @@ class cascade:
             return False
         elif self.min_ce_entry.get_text_length()==0:
             return False
+        elif self.num_cgroup_entry.get_text_length()==0:
+            return False
         else:
             return True
 
@@ -61,6 +64,7 @@ class cascade:
             db['Minimum Out Epochs']=self.min_oe_entry.get_text()
             db['Maximum Candidate Epochs']=self.max_ce_entry.get_text()
             db['Minimum Candidate Epochs']=self.min_ce_entry.get_text()
+            db['Number Candidate Groups']=self.num_cgroup_entry.get_text()
             db.close()
             self.window.destroy()
         else:
