@@ -156,6 +156,11 @@ class neuron:
         
     def start_training(self,widget,data=None):
         """Training Code for the Neuron Network."""
+        if not self._validate_pretraining():
+            dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
+            dlg.run()
+            dlg.destroy()
+            return
         cmd="./train.py -t"
         args=shlex.split(cmd)
         process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
@@ -223,8 +228,39 @@ class neuron:
         Argument data."""
         self.fcdialog.show()
          
+    def _validate_pretraining(self):
+        """Validates the input data(i/o and o/p neurons) with training file"""
+        try:
+            db=dbm.open('config.dat','c')
+            num_input=int(db['Input Neurons'])
+            num_output=int(db['Output Neurons'])
+            tfile=db['Training File']
+        except KeyError as key:
+            dlg=gtk.MessageDialog(None,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK, str(key)+ " Uninitialized")
+            dlg.run()
+            dlg.destroy()
+            db.close()
+        finally:
+            db.close()
+        fhandler = open(tfile,'r')
+        fline = fhandler.readline().strip().split()
+        fhandler.close()
+        cinput_neurons = int(fline[1])
+        coutput_neurons = int(fline[2])
+        if cinput_neurons!=num_input:
+            return False
+        elif coutput_neurons!=num_output:
+            return False
+        else:
+            return True
+
     def approximate(self,widget,data=None):
         """For Function Approximation in Neuron."""
+        if not self._validate_pretraining():
+            dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
+            dlg.run()
+            dlg.destroy()
+            return
         cmd="./fapprox.py"
         args=shlex.split(cmd)
         process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
@@ -239,6 +275,11 @@ class neuron:
 
     def on_test(self,widget,data=None):
         """For testing of the BPN network in Neuron."""
+        if not self._validate_pretraining():
+            dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
+            dlg.run()
+            dlg.destroy()
+            return
         cmd="./test.py"
         args=shlex.split(cmd)
         process=subprocess.Popen(args,bufsize=0,shell=False,stdout=subprocess.PIPE,stderr=subprocess.PIPE,cwd=None)
