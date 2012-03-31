@@ -253,7 +253,7 @@ class bpn_test:
             ocf=float(db['Output Change Fraction'])
             ose=int(db['Output Stagnation Epochs'])
             ccf=float(db['Candidate Change Fraction'])
-            cse=float(db['Candidate Stagnation Epochs'])
+            cse=int(db['Candidate Stagnation Epochs'])
             wm=float(db['Weight Multiplier'])
             cl=float(db['Candidate Limit'])
             max_oe=int(db['Maximum Out Epochs'])
@@ -269,9 +269,9 @@ class bpn_test:
             self.ann.set_cascade_weight_multiplier(wm)
             self.ann.set_cascade_candidate_limit(cl)
             self.ann.set_cascade_max_out_epochs(max_oe)
-            self.ann.set_cascade_min_out_epochs(min_oe)
+            #self.ann.set_cascade_min_out_epochs(min_oe)
             self.ann.set_cascade_max_cand_epochs(max_ce)
-            self.ann.set_cascade_min_cand_epochs(min_ce)
+            #self.ann.set_cascade_min_cand_epochs(min_ce)
             self.ann.set_cascade_num_candidate_groups(num_cgroup)
         if ncascade:
             self.ann.cascadetrain_on_file(tfile,max_neurons,neurons_between_reports,cdesired_error)
@@ -279,11 +279,11 @@ class bpn_test:
             self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
         #ann.print_parameters()
         print "Testing network"
+        train_data = libfann.training_data()
+        train_data.read_train_from_file(tfile)
         test_data = libfann.training_data()
         test_data.read_train_from_file(test_file)
-        self.ann.reset_MSE()
-        self.ann.test_data(test_data)
-        print "MSE error on test data: %f" % self.ann.get_MSE()
+        print "\nTrain error: %f, Test error: %f\n\n" %( ann.test_data(train_data),ann.test_data(test_data))
 
 if __name__=="__main__":
     network=bpn_test()
