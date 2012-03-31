@@ -263,6 +263,7 @@ class function_aprox:
             min_oe=int(db['Minimum Out Epochs'])
             max_ce=int(db['Maximum Candidate Epochs'])
             min_ce=int(db['Minimum Candidate Epochs'])
+            num_cgroup=int(db['Number Candidate Groups'])
             db.close()
             self.ann.set_cascade_output_change_fraction(ocf)
             self.ann.set_cascade_output_stagnation_epochs(ose)
@@ -274,6 +275,7 @@ class function_aprox:
             self.ann.set_cascade_min_out_epochs(min_oe)
             self.ann.set_cascade_max_cand_epochs(max_ce)
             self.ann.set_cascade_min_cand_epochs(min_ce)
+            self.ann.set_cascade_num_candidate_groups(num_cgroup)
         if ncascade:
             self.ann.cascadetrain_on_file(tfile,max_neurons,neurons_between_reports,cdesired_error)
         else:
