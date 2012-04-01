@@ -69,6 +69,14 @@ class askparam_window:
             return False
         elif int(self.numl_text.get_text())-int(self.numh_text.get_text())!=2:
             return False
+        elif int(self.numh_text.get_text())>1:
+            numh_layers = int(self.numh_text.get_text())
+            hidden_neurons = self.hiddenn_text.get_text()
+            no_commas = len(hidden_neurons.split(",")) #Returns total commas + 1
+            if no_commas!=numh_layers:
+                return False
+            else:
+                return True
         else:
             return True
 
