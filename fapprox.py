@@ -11,7 +11,7 @@ try:
     numl=int(db['Number of Layers'])
     num_input=int(db['Input Neurons'])
     num_output=int(db['Output Neurons'])
-    num_neurons_hidden=int(db['Hidden Neurons'])
+    num_neurons_hidden=(db['Hidden Neurons'])
     num_hlay=int(db['Number of Hidden Layers'])
     tfile=db['Training File']
 except KeyError as key:
@@ -48,13 +48,20 @@ class function_aprox:
             sys.exit(1)
         finally:
             db.close()
+        hidden_neurons_list = [num_input]
+        lay_neurons = tuple(num_neurons_hidden.split(",")) #Hidden Neurons in String
+        for hid_neuron in lay_neurons:
+            hidden_neurons_list.append(int(hid_neuron))
+        hidden_neurons_list.append(num_output)
+        hnt = tuple(hidden_neurons_list)            
+        hiddenn = num_neurons_hidden.split(",")
         print "BPN Network Training Details:\n"
         if bpn_type=="SPR":
-            self.ann.create_sparse_array(connection_rate, (num_input, num_neurons_hidden, num_output))
+            self.ann.create_sparse_array(connection_rate, hnt)
         elif bpn_type=="STD":
-            self.ann.create_standard_array((num_input,num_neurons_hidden,num_output))
+            self.ann.create_standard_array(hnt)
         elif bpn_type=="SRT":
-            self.ann.create_shortcut_array((num_input,num_neurons_hidden,num_output))
+            self.ann.create_shortcut_array(hnt)
         if talgo=="FANN_TRAIN_INCREMENTAL":
             self.ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
         elif talgo=="FANN_TRAIN_BATCH":
@@ -121,6 +128,8 @@ class function_aprox:
             self.ann.set_activation_function_output(libfann.SIN)
         elif ol_act_fun=="COS":
             self.ann.set_activation_function_output(libfann.COS)            
+        elif ol_act_fun=="SIGMOID SYMMETRIC STEPWISE":
+            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
         #For Advanced Parameters related to Fixed Topology
         try:
             db=dbm.open('config.dat','c')
