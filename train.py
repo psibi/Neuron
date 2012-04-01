@@ -290,6 +290,7 @@ class bpn:
         network_fname="./dataset/"+temp[0]+".net"
         print "Neuron Network Also saved at "+ network_fname
         self.ann.save(self.network_file)
+        print "\nBPN Network Connection:\n"
         self.ann.print_connections()
         self.move_network_file()
 
