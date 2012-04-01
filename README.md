@@ -15,8 +15,8 @@ GNU GPLv3
 
 Installation:
 --------------
-1) Clone this repository
-2) $ python neuron.py
+1. Clone this repository
+2. $ python neuron.py
 
 Bug Report:
 -----------
