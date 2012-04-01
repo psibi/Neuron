@@ -35,7 +35,7 @@ class askparam_window:
         """Handler for the OK button for the window which is raised
         whenever it is clicked"""
         if not self.validate_parameters():
-            em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"BPN Network Parameters Not Completed")
+            em=gtk.MessageDialog(None,gtk.DIALOG_MODAL,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Incorrect Parameters")
             em.run()
             em.destroy()
         else:
@@ -66,6 +66,8 @@ class askparam_window:
         elif self.hiddenn_text.get_text_length()==0:
             return False
         elif self.numh_text.get_text_length()==0:
+            return False
+        elif int(self.numl_text.get_text())-int(self.numh_text.get_text())!=2:
             return False
         else:
             return True
