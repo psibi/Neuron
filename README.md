@@ -5,9 +5,10 @@ A neural network simulator which can be used to train and test a network. The ma
 
 Authors:
 --------
-Sibi <sibi@psibi.in>
-Siddarth
-Jones
+
+* Sibi <sibi@psibi.in>
+* Siddarth
+* Jones
 
 License:
 --------
