@@ -12,7 +12,7 @@ try:
     numl=int(db['Number of Layers'])
     num_input=int(db['Input Neurons'])
     num_output=int(db['Output Neurons'])
-    num_neurons_hidden=int(db['Hidden Neurons'])
+    num_neurons_hidden=(db['Hidden Neurons'])
     num_hlay=int(db['Number of Hidden Layers'])
     tfile=db['Training File']
     test_file=db['Test File']
@@ -42,15 +42,22 @@ class bpn_test:
         iterations_between_reports=int(db['Iteration Between Reports'])
         ol_act_fun=db['Output Layer Activation Function']
         db.close()
+        hidden_neurons_list = [num_input]
+        lay_neurons = tuple(num_neurons_hidden.split(",")) #Hidden Neurons in String
+        for hid_neuron in lay_neurons:
+            hidden_neurons_list.append(int(hid_neuron))
+        hidden_neurons_list.append(num_output)
+        hnt = tuple(hidden_neurons_list)            
+        hiddenn = num_neurons_hidden.split(",")
         train_data = libfann.training_data()
         train_data.read_train_from_file(tfile)
         ann = libfann.neural_net()
         if bpn_type=="SPR":
-            ann.create_sparse_array(connection_rate, (len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+            ann.create_sparse_array(connection_rate, hnt)
         elif bpn_type=="STD":
-            ann.create_standard_array((len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+            ann.create_standard_array(hnt)
         elif bpn_type=="SRT":
-            ann.create_shortcut_array((len(train_data.get_input()[0]), num_neurons_hidden, len(train_data.get_output()[0])))
+            ann.create_shortcut_array(hnt)
         ann.set_learning_rate(learning_rate)
         if talgo=="FANN_TRAIN_INCREMENTAL":
             self.ann.set_training_algorithm(libfann.TRAIN_INCREMENTAL)
@@ -117,7 +124,9 @@ class bpn_test:
         elif ol_act_fun=="SIN":
             self.ann.set_activation_function_output(libfann.SIN)
         elif ol_act_fun=="COS":
-            self.ann.set_activation_function_output(libfann.COS)            
+            self.ann.set_activation_function_output(libfann.COS)           
+        elif ol_act_fun=="SIGMOID SYMMETRIC STEPWISE":
+            self.ann.set_activation_function_output(libfann.SIGMOID_SYMMETRIC_STEPWISE)
         #For Advanced Parameters related to Fixed Topology
         try:
             db=dbm.open('config.dat','c')
@@ -277,7 +286,7 @@ class bpn_test:
             self.ann.cascadetrain_on_file(tfile,max_neurons,neurons_between_reports,cdesired_error)
         else:
             self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
-        #ann.print_parameters()
+        ann.print_parameters()
         print "Testing network"
         train_data = libfann.training_data()
         train_data.read_train_from_file(tfile)
