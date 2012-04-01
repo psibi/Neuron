@@ -283,7 +283,7 @@ class bpn_test:
         train_data.read_train_from_file(tfile)
         test_data = libfann.training_data()
         test_data.read_train_from_file(test_file)
-        print "\nTrain error: %f, Test error: %f\n\n" %( ann.test_data(train_data),ann.test_data(test_data))
+        print "\nTrain error: %f \nTest error: %f\n\n" %( ann.test_data(train_data),ann.test_data(test_data))
 
 if __name__=="__main__":
     network=bpn_test()
