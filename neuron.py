@@ -52,6 +52,7 @@ class neuron:
         self.qprop=builder.get_object("qprop")
         self.train_config=builder.get_object("train_config")
         self.evolving_train_config=builder.get_object("evolving_train_config")
+        self.statusbar=builder.get_object("statusbar")
         self.algorithm=False
         self.algorithm_name=""
         self.filename=""
@@ -156,6 +157,8 @@ class neuron:
         
     def start_training(self,widget,data=None):
         """Training Code for the Neuron Network."""
+        context_id = self.statusbar.get_context_id("Train Start")
+        self.statusbar.push(context_id,"Training Activity Started")
         if not self._validate_pretraining():
             dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
             dlg.run()
@@ -167,6 +170,8 @@ class neuron:
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
+        context_id = self.statusbar.get_context_id("Train Stop")
+        self.statusbar.push(context_id,"Training Activity Completed")
             
     def on_clean(self,widget,data=None):
         """For cleaning the Neuron dataset."""
@@ -256,6 +261,8 @@ class neuron:
 
     def approximate(self,widget,data=None):
         """For Function Approximation in Neuron."""
+        context_id = self.statusbar.get_context_id("Appr Start")
+        self.statusbar.push(context_id,"Function Approximation Activity Started")
         if not self._validate_pretraining():
             dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
             dlg.run()
@@ -267,6 +274,8 @@ class neuron:
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
+        context_id = self.statusbar.get_context_id("Appr End")
+        self.statusbar.push(context_id,"Function Approximation Activity Completed")
 
     def get_test_data(self,widget,data=None):
         """For displaying the file chooser dialog to get
@@ -275,6 +284,8 @@ class neuron:
 
     def on_test(self,widget,data=None):
         """For testing of the BPN network in Neuron."""
+        context_id = self.statusbar.get_context_id("Test Start")
+        self.statusbar.push(context_id,"Test Activity Started")
         if not self._validate_pretraining():
             dlg=gtk.MessageDialog(self.window,gtk.DIALOG_DESTROY_WITH_PARENT,gtk.MESSAGE_ERROR,gtk.BUTTONS_OK,"Input Incompatible with Training file.")
             dlg.run()
@@ -286,6 +297,8 @@ class neuron:
         output=process.communicate()
         if output[0]:
             self.write_neuron(output[0])
+        context_id = self.statusbar.get_context_id("Test Stop")
+        self.statusbar.push(context_id,"Test Activity Completed")
 
     def on_train_config_activate(self,widget,data=None):
         """Handler to show window related to Advanced training
