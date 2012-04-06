@@ -302,7 +302,6 @@ class bpn_test:
             self.ann.cascadetrain_on_file(tfile,max_neurons,neurons_between_reports,cdesired_error)
         else:
             self.ann.train_on_file(tfile, max_iterations, iterations_between_reports, desired_error)
-        ann.print_parameters()
         print "Testing network"
         train_data = libfann.training_data()
         train_data.read_train_from_file(tfile)
