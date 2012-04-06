@@ -313,16 +313,16 @@ class function_aprox:
         width=20
         once=True
         for ite in range(len(inputs)):
-            a=inputs.pop()
-            b=a.split(' ')
-            sample=b[1]
-            second=sample[:-1]
-            inpu=(int(b[0]),int(second))
-            calc_out=self.ann.run(inpu)
+            a=inputs.pop(0).split(' ')
+            finpu = []
+            for i in a:
+                if i!='\n':
+                    finpu.append(float(i))
+            calc_out=self.ann.run(tuple(finpu))
             i=""
             header=""
-            for x in range(len(inpu)):
-                i=i+"\t"+str(inpu[x]).ljust(width)
+            for x in range(len(finpu)):
+                i=i+"\t"+str(finpu[x]).ljust(width)
                 header=header+"\t"+"Input #"+str(x)
                 header.rjust(width)
             if once:
