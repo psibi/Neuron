@@ -240,7 +240,7 @@ class bpn:
             if tsf=="MSE":
                 self.ann.set_train_stop_function(libfann.STOPFUNC_MSE)
             elif tsf=="BIT FAIL":
-                self.ann.set_train_stop_function(libfann.FANN_STOPFUNC_BIT)
+                self.ann.set_train_stop_function(libfann.STOPFUNC_BIT)
             self.ann.set_bit_fail_limit(bfl)
         finally:
             db.close()
